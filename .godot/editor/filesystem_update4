@@ -2,3 +2,4 @@ res://main.tscn
 res://log.tscn
 res://floor.tscn
 res://character.tscn
+res://character_controller.gd
