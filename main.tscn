@@ -1,3 +1,14 @@
-[gd_scene format=3 uid="uid://cwbeeaagng8ke"]
+[gd_scene load_steps=3 format=3 uid="uid://cwbeeaagng8ke"]
+
+[ext_resource type="PackedScene" uid="uid://bdv1drd2fve82" path="res://log.tscn" id="1_5fxbd"]
+[ext_resource type="PackedScene" uid="uid://3ow4gck0gxat" path="res://floor.tscn" id="2_o1y5v"]
 
 [node name="Node3D" type="Node3D"]
+
+[node name="FLOOR" parent="." instance=ExtResource("2_o1y5v")]
+
+[node name="LOG" parent="." instance=ExtResource("1_5fxbd")]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 3.43314, 0)
+
+[node name="temp_cam" type="Camera3D" parent="."]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4.19126, 22.8684)
