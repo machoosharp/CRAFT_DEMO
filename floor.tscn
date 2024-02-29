@@ -1,9 +1,16 @@
-[gd_scene load_steps=3 format=3 uid="uid://3ow4gck0gxat"]
+[gd_scene load_steps=5 format=3 uid="uid://3ow4gck0gxat"]
+
+[ext_resource type="Texture2D" uid="uid://bq0221sccs21l" path="res://grass-9843-in-architextures.png" id="1_8br6h"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_wtmu6"]
-size = Vector3(80, 0.9, 80)
+size = Vector3(10, 0.9, 10)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0rqx1"]
+albedo_texture = ExtResource("1_8br6h")
 
 [sub_resource type="PlaneMesh" id="PlaneMesh_s3alo"]
+material = SubResource("StandardMaterial3D_0rqx1")
+size = Vector2(1, 1)
 
 [node name="FLOOR" type="Node3D"]
 
@@ -15,5 +22,5 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, -0.447904, 0)
 shape = SubResource("BoxShape3D_wtmu6")
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="RigidBody3D"]
-transform = Transform3D(40, 0, 0, 0, 1, 0, 0, 0, 40, 0, 0, 0)
+transform = Transform3D(10, 0, 0, 0, 1, 0, 0, 0, 10, 0, 0, 0)
 mesh = SubResource("PlaneMesh_s3alo")
