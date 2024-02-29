@@ -1,12 +1,17 @@
 extends CharacterBody3D
 
 
-const SPEED = 10.0
+const SPEED = 8.0
 const JUMP_VELOCITY = 13
 
 var locked = false
+var _rotation_input: float
+var _tilt_input: float
+var _mouse_rotation: Vector3
+var _player_rotation: Vector3
+var _camera_rotation: Vector3
 
-@export var sensitivity = 200
+@export var sensitivity = 8
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity") * 5
@@ -19,6 +24,8 @@ func _physics_process(delta):
 	# Add the gravity.
 	if not is_on_floor():
 		velocity.y -= gravity * delta
+
+	_update_camera(delta)
 
 	# Handle jump.
 	if Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
@@ -46,13 +53,34 @@ func _physics_process(delta):
 
 	move_and_slide()
 
-func _input(event):
-	
+func _update_camera(delta):
+	_mouse_rotation.x += _tilt_input * delta
+	_mouse_rotation.y += _rotation_input * delta
+	_mouse_rotation.x = clamp(_mouse_rotation.x, deg_to_rad(-85), deg_to_rad(85))
+
+	_player_rotation = Vector3(0.0, _mouse_rotation.y, 0.0)
+	_camera_rotation = Vector3(_mouse_rotation.x, 0.0, 0.0)
+
+	$Camera3D.transform.basis = Basis.from_euler(_camera_rotation)
+	$Camera3D.rotation.z = 0.0
+
+	global_transform.basis = Basis.from_euler(_player_rotation)
+
+	_rotation_input = 0.0
+	_tilt_input = 0.0
+
+func _unhandled_input(event):
+
+	#if event is InputEventMouseMotion and Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
+		#rotation.y -= event.relative.x / sensitivity
+		#$Camera3D.rotation.x -= event.relative.y / sensitivity
+		#$Camera3D.rotation.x = clamp($Camera3D.rotation.x, deg_to_rad(-85), deg_to_rad(85))
+
 	if event is InputEventMouseMotion and Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
-		rotation.y -= event.relative.x / sensitivity
-		$Camera3D.rotation.x -= event.relative.y / sensitivity
-		$Camera3D.rotation.x = clamp($Camera3D.rotation.x, deg_to_rad(-85), deg_to_rad(85))
-	
+		_rotation_input -= event.relative.x / sensitivity
+		_tilt_input -= event.relative.y / sensitivity
+
+
 	elif event is InputEventKey:
 		if event.keycode == KEY_ESCAPE:
 			if event.pressed and not locked:
