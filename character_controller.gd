@@ -4,6 +4,11 @@ extends CharacterBody3D
 const SPEED = 8.0
 const JUMP_VELOCITY = 13
 
+@onready var camera = $Camera3D
+@onready var slicer = $Camera3D/Slicer
+
+var mesh_slicer = MeshSlicer.new()
+
 var locked = false
 var _rotation_input: float
 var _tilt_input: float
@@ -15,6 +20,9 @@ var _camera_rotation: Vector3
 
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity") * 5
+
+func _init():
+	RenderingServer.set_debug_generate_wireframes(true)
 
 func _ready():
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
@@ -52,6 +60,60 @@ func _physics_process(delta):
 		position = Vector3(0, 0, 0)
 
 	move_and_slide()
+
+	if Input.is_action_just_pressed("left_mouse"):
+		for body in $Camera3D/Slicer/Area3D.get_overlapping_bodies().duplicate():
+			if body is RigidBody3D:
+				
+				
+				#The plane transform at the rigidbody local transform
+				var meshinstance = body.get_node("MeshInstance3D")
+				var Transform = Transform3D.IDENTITY
+				Transform.origin = meshinstance.to_local((slicer.global_transform.origin))
+				Transform.basis.x = meshinstance.to_local((slicer.global_transform.basis.x+body.global_position))
+				Transform.basis.y = meshinstance.to_local((slicer.global_transform.basis.y+body.global_position))
+				Transform.basis.z = meshinstance.to_local((slicer.global_transform.basis.z+body.global_position))
+
+				
+
+				var collision = body.get_node("CollisionShape3D")
+
+				#Slice the mesh
+				var meshes = mesh_slicer.slice_mesh(Transform,meshinstance.mesh,null)
+
+				meshinstance.mesh = meshes[0]
+
+				#generate collision
+				if len(meshes[0].get_faces()) > 2:
+					collision.shape = meshes[0].create_convex_shape()
+
+				#adjust the rigidbody center of mass
+				body.center_of_mass_mode = 1
+				body.center_of_mass = body.to_local(meshinstance.to_global(calculate_center_of_mass(meshes[0])))
+
+				#second half of the mesh
+				var body2 = body.duplicate()
+				$"../RigidBodys".add_child(body2)
+				meshinstance = body2.get_node("MeshInstance3D")
+				collision = body2.get_node("CollisionShape3D")
+				meshinstance.mesh = meshes[1]
+
+				#generate collision
+				if len(meshes[1].get_faces()) > 2:
+					collision.shape = meshes[1].create_convex_shape()
+
+				#get mesh size
+				var aabb = meshes[0].get_aabb()
+				var aabb2 = meshes[1].get_aabb()
+				#queue_free() if the mesh is too small
+				if aabb2.size.length() < 0.3:
+					body2.queue_free()
+				if aabb.size.length() < 0.3:
+					body.queue_free()
+					
+				#adjust the rigidbody center of mass
+				body2.center_of_mass = body2.to_local(meshinstance.to_global(calculate_center_of_mass(meshes[1])))
+
 
 func _update_camera(delta):
 	_mouse_rotation.x += _tilt_input * delta
@@ -94,3 +156,30 @@ func _unhandled_input(event):
 			elif not event.pressed:
 				locked = false
 
+	if Input.is_action_pressed("wireframe"):
+		var vp = get_viewport()
+		vp.debug_draw = (vp.debug_draw + 1) % 5
+	
+	#rotate slicer plane
+	if Input.is_action_pressed("scroll_up"):
+		slicer.rotate_z(0.1)
+	if Input.is_action_pressed("scroll_down"):
+		slicer.rotate_z(-0.1)	
+
+
+func calculate_center_of_mass(mesh:ArrayMesh):
+	#Not sure how well this work
+	var meshVolume = 0
+	var temp = Vector3(0,0,0)
+	for i in range(len(mesh.get_faces())/3):
+		var v1 = mesh.get_faces()[i]
+		var v2 = mesh.get_faces()[i+1]
+		var v3 = mesh.get_faces()[i+2]
+		var center = (v1 + v2 + v3) / 3
+		var volume = (Geometry3D.get_closest_point_to_segment_uncapped(v3,v1,v2).distance_to(v3)*v1.distance_to(v2))/2
+		meshVolume += volume
+		temp += center * volume
+	
+	if meshVolume == 0:
+		return Vector3.ZERO
+	return temp / meshVolume

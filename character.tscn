@@ -1,10 +1,15 @@
-[gd_scene load_steps=4 format=3 uid="uid://c3w863swgslqe"]
+[gd_scene load_steps=6 format=3 uid="uid://c3w863swgslqe"]
 
 [ext_resource type="Script" path="res://character_controller.gd" id="1_u08ph"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_61hv6"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_5q0gg"]
+
+[sub_resource type="QuadMesh" id="QuadMesh_uv4ub"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_iqr4d"]
+size = Vector3(1, 1, 0.01)
 
 [node name="CHARACTER" type="CharacterBody3D"]
 script = ExtResource("1_u08ph")
@@ -17,3 +22,14 @@ mesh = SubResource("CapsuleMesh_5q0gg")
 
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7, 0)
+
+[node name="Slicer" type="Node3D" parent="Camera3D"]
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -0.805088, 0, -1.73878)
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Camera3D/Slicer"]
+mesh = SubResource("QuadMesh_uv4ub")
+
+[node name="Area3D" type="Area3D" parent="Camera3D/Slicer"]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Camera3D/Slicer/Area3D"]
+shape = SubResource("BoxShape3D_iqr4d")
