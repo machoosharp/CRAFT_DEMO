@@ -18,6 +18,8 @@ var _camera_rotation: Vector3
 
 @export var sensitivity = 8
 
+@onready var grass_footstep = $Audios/GrassFootstep
+@onready var walk_animation = $AnimationPlayers/WalkAnimation
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity") * 5
 
@@ -49,6 +51,10 @@ func _physics_process(delta):
 			velocity.x = direction.x * SPEED
 			velocity.z = direction.z * SPEED
 
+			# Footstep Logic
+			if is_on_floor():
+				walk_animation.play( 'walking' )
+
 		else:
 			velocity.x = move_toward(velocity.x, 0, SPEED)
 			velocity.z = move_toward(velocity.z, 0, SPEED)
@@ -64,8 +70,8 @@ func _physics_process(delta):
 	if Input.is_action_just_pressed("left_mouse"):
 		for body in $Camera3D/Slicer/Area3D.get_overlapping_bodies().duplicate():
 			if body is RigidBody3D:
-				
-				
+
+
 				#The plane transform at the rigidbody local transform
 				var meshinstance = body.get_node("MeshInstance3D")
 				var Transform = Transform3D.IDENTITY
@@ -74,7 +80,7 @@ func _physics_process(delta):
 				Transform.basis.y = meshinstance.to_local((slicer.global_transform.basis.y+body.global_position))
 				Transform.basis.z = meshinstance.to_local((slicer.global_transform.basis.z+body.global_position))
 
-				
+
 
 				var collision = body.get_node("CollisionShape3D")
 
@@ -110,7 +116,7 @@ func _physics_process(delta):
 					body2.queue_free()
 				if aabb.size.length() < 0.3:
 					body.queue_free()
-					
+
 				#adjust the rigidbody center of mass
 				body2.center_of_mass = body2.to_local(meshinstance.to_global(calculate_center_of_mass(meshes[1])))
 
@@ -159,12 +165,12 @@ func _unhandled_input(event):
 	if Input.is_action_pressed("wireframe"):
 		var vp = get_viewport()
 		vp.debug_draw = (vp.debug_draw + 1) % 5
-	
+
 	#rotate slicer plane
 	if Input.is_action_pressed("scroll_up"):
 		slicer.rotate_z(0.1)
 	if Input.is_action_pressed("scroll_down"):
-		slicer.rotate_z(-0.1)	
+		slicer.rotate_z(-0.1)
 
 
 func calculate_center_of_mass(mesh:ArrayMesh):
@@ -179,7 +185,11 @@ func calculate_center_of_mass(mesh:ArrayMesh):
 		var volume = (Geometry3D.get_closest_point_to_segment_uncapped(v3,v1,v2).distance_to(v3)*v1.distance_to(v2))/2
 		meshVolume += volume
 		temp += center * volume
-	
+
 	if meshVolume == 0:
 		return Vector3.ZERO
 	return temp / meshVolume
+
+func _play_walk_sound():
+	grass_footstep.pitch_scale = randf_range( .9, 1.08 )
+	grass_footstep.play()
