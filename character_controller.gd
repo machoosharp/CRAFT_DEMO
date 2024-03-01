@@ -18,6 +18,7 @@ var _camera_rotation: Vector3
 
 @export var sensitivity = 8
 
+@onready var body_store = $"../RigidBodiesStore"
 @onready var grass_footstep = $Audios/GrassFootstep
 @onready var walk_animation = $AnimationPlayers/WalkAnimation
 # Get the gravity from the project settings to be synced with RigidBody nodes.
@@ -99,7 +100,7 @@ func _physics_process(delta):
 
 				#second half of the mesh
 				var body2 = body.duplicate()
-				$"../RigidBodys".add_child(body2)
+				body_store.add_child(body2)
 				meshinstance = body2.get_node("MeshInstance3D")
 				collision = body2.get_node("CollisionShape3D")
 				meshinstance.mesh = meshes[1]
