@@ -1,0 +1,102 @@
+[gd_scene load_steps=4 format=3 uid="uid://dt0d4n5x5qcde"]
+
+[ext_resource type="Texture2D" uid="uid://chql7p8w5ahc4" path="res://crosshair_01.png" id="1_6c0dt"]
+[ext_resource type="Shader" path="res://crosshair.gdshader" id="1_8eaq8"]
+
+[sub_resource type="ShaderMaterial" id="ShaderMaterial_xgnjj"]
+shader = ExtResource("1_8eaq8")
+
+[node name="PlayerUI" type="CanvasLayer"]
+
+[node name="Crosshair" type="Control" parent="."]
+top_level = true
+layout_mode = 3
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -20.0
+offset_right = 20.0
+offset_bottom = 20.0
+grow_horizontal = 2
+grow_vertical = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+
+[node name="Container" type="BoxContainer" parent="Crosshair"]
+layout_mode = 1
+anchors_preset = -1
+anchor_left = 0.5
+anchor_top = 0.4
+anchor_right = 0.5
+anchor_bottom = 0.4
+offset_left = -40.0
+offset_top = -40.0
+offset_right = 40.0
+offset_bottom = 40.0
+grow_horizontal = 2
+grow_vertical = 2
+alignment = 1
+
+[node name="TextureRect" type="TextureRect" parent="Crosshair/Container"]
+material = SubResource("ShaderMaterial_xgnjj")
+layout_mode = 2
+size_flags_horizontal = 4
+size_flags_vertical = 4
+texture = ExtResource("1_6c0dt")
+stretch_mode = 3
+
+[node name="Hotbar" type="Control" parent="."]
+layout_mode = 3
+anchors_preset = 7
+anchor_left = 0.5
+anchor_top = 1.0
+anchor_right = 0.5
+anchor_bottom = 1.0
+offset_left = -40.0
+offset_top = -116.0
+offset_bottom = -63.0
+grow_horizontal = 2
+grow_vertical = 0
+scale = Vector2(2, 2)
+
+[node name="BehindSpace" type="BoxContainer" parent="Hotbar"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -19.5
+offset_right = 20.0
+offset_bottom = 19.5
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="ColorRect" type="ColorRect" parent="Hotbar/BehindSpace"]
+layout_mode = 2
+size_flags_horizontal = 3
+
+[node name="MainSpace" type="BoxContainer" parent="Hotbar"]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -20.0
+offset_top = -19.5
+offset_right = 20.0
+offset_bottom = 19.5
+grow_horizontal = 2
+grow_vertical = 2
+scale = Vector2(0.9, 0.9)
+pivot_offset = Vector2(20, 20)
+
+[node name="ColorRect" type="ColorRect" parent="Hotbar/MainSpace"]
+layout_mode = 2
+size_flags_horizontal = 3
+color = Color(0.541176, 0.541176, 0.541176, 0.72549)

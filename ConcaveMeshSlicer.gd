@@ -4,7 +4,7 @@ class_name MeshSlicer
 
 var vert_slice = []
 
-var mdt = MeshDataTool.new() 
+var mdt = MeshDataTool.new()
 
 func _convertToArrayMesh( mesh: Mesh ):
 	var surface_tool := SurfaceTool.new()
@@ -31,9 +31,9 @@ func _convertToArrayMesh( mesh: Mesh ):
 ## Return an array of the sliced meshes. The cross-section material is
 ## positioned and rotated base on the Transform3D
 
-func slice_mesh( 
+func slice_mesh(
 	slice_transform: Transform3D,
-	in_mesh: Mesh, 
+	in_mesh: Mesh,
 	cross_section_material: Material = null
 ) -> Array:
 
@@ -64,7 +64,7 @@ func slice_mesh(
 	print( mesh.get_surface_count())
 
 	for surface_idx in range( mesh.get_surface_count() ):
-		
+
 		# Uses specified surface of given Mesh to populate data for MeshDataTool.
 		mdt.create_from_surface( mesh, surface_idx )
 
@@ -240,7 +240,7 @@ func slice_mesh(
 			for v in face_verts2:
 				var vert = v
 				var uv = Vector2.ZERO
-				var norm = Vector3.ZERO	
+				var norm = Vector3.ZERO
 
 				if typeof(v) == TYPE_INT:
 					vert = mdt.get_vertex(v)
@@ -336,31 +336,31 @@ func _set_holes(polygons,norm,slice_transform):
 	else:
 		var closest_point = Vector2.ZERO
 		for i in range(len(polygons)):
-			
-			
+
+
 			var polygon = polygons[i]
-			
+
 
 			if len(polygon) > 0:
-				
+
 				var nearest_intersect_dist = INF
 				var nearest_intersect_polygon = -1
 				var point = _to_transform_local2(slice_transform,polygon[0])
 				point = Vector2(point.x,point.y)
 				var is_inside = false
-				
+
 				for j in range(len(polygons)):
-			
+
 					var check_dir = Vector3.ZERO
 					if j != i:
-						
+
 
 						var polygon_check = polygons[j]
 
-						
+
 						var polygon2d = []
 
-						
+
 						var closest_dist = INF
 						for k in range(len(polygon_check)):
 							var local_pos = _to_transform_local2(slice_transform,polygon_check[k])
@@ -368,19 +368,19 @@ func _set_holes(polygons,norm,slice_transform):
 							local_pos = _to_transform_local2(slice_transform,polygon_check[(k+1)%len(polygon_check)])
 							var pos2d2 = Vector2(local_pos.x,local_pos.y)
 							polygon2d.append(pos2d)
-							
+
 							var point_segment = Geometry2D.get_closest_point_to_segment(point,pos2d,pos2d2)
 							if point_segment.distance_to(point) < closest_dist:
 								closest_dist = point_segment.distance_to(point)
 								closest_point = point_segment
-							
+
 						if Geometry2D.is_point_in_polygon(point,PackedVector2Array(polygon2d)) == true:
 							is_inside = true
 							if closest_dist < nearest_intersect_dist:
 								nearest_intersect_dist = closest_dist
 								nearest_intersect_polygon = j
-								
-						
+
+
 
 
 				if is_inside:
@@ -394,14 +394,14 @@ func _set_holes(polygons,norm,slice_transform):
 
 							break
 						if (polygon_to2 == polygon_to and polygon_index != -1) or polygon_index-1 == i:
-							polygon_to = polygons[polygon_index] 
+							polygon_to = polygons[polygon_index]
 							polygon_index += 1
 							continue
 
 
 						for j in range(len(polygon)):
 							var vert = polygon[j]
-							
+
 
 							for l in range(len(polygon_to)):
 								var is_intersect = false
@@ -409,9 +409,9 @@ func _set_holes(polygons,norm,slice_transform):
 								var vert_up = vert+norm
 								var n = _get_triangle_normal(vert,vert_to,vert_up)
 
-								
+
 								for k in range(len(polygons)):
-									
+
 									var polygon_check = polygons[k]
 									for m in range(len(polygon_check)):
 										var v1 = polygon_check[m]
@@ -453,11 +453,11 @@ func _set_holes(polygons,norm,slice_transform):
 							if connected:
 								break
 						if not connected:
-							polygon_to = polygons[polygon_index] 
+							polygon_to = polygons[polygon_index]
 							polygon_index += 1
 					if connected:
 						polygons[i] = []
-						
+
 		return polygons
 
 func _add_to_vert_slice(v1,v2):
@@ -466,7 +466,7 @@ func _add_to_vert_slice(v1,v2):
 	else:
 		v1 = roun(mdt.get_vertex(v1))
 	if typeof(v2) == TYPE_ARRAY:
-		
+
 		v2 = roun(v2[0])
 	else:
 		v2 = roun(mdt.get_vertex(v2))
@@ -480,7 +480,7 @@ func _find_closest_edge(norm1:Vector3,norm2:Vector3,norm_to:Vector3,vert1:Vector
 	if side != to_side:
 		norm1 = -norm1
 		side = -side
-	
+
 	mid_point = (vert2+vert_to)/2
 	to_side = _check_side(mid_point,norm_to,vert_to)
 	var side2 = _check_side(mid_point,norm2,vert2)
@@ -489,7 +489,7 @@ func _find_closest_edge(norm1:Vector3,norm2:Vector3,norm_to:Vector3,vert1:Vector
 		side2 = - side2
 
 	if side == side2:
-		
+
 		if side == -1:
 			if (vert1-vert_to).length() < (vert2-vert_to).length():
 				return 0
@@ -528,21 +528,21 @@ func _sort_verts():
 			else:
 				vert_slice.erase(vert_slice[0])
 				continue
-			
-			
-				
+
+
+
 		var v_count = len(vert_slice)
 		var closed = false
 
 		for i in vert_slice:
 			if (not _is_in_sorted_list(sorted_list,i[1])) or (not _is_in_sorted_list(sorted_list,i[0])):
 				for j in range(2):
-					
-					
-					var l = [sorted_list[0],sorted_list[len(sorted_list)-1]][j]
-					
 
-					
+
+					var l = [sorted_list[0],sorted_list[len(sorted_list)-1]][j]
+
+
+
 					if l[1] == false or l[2] == false:
 						if l[0] == i[0]:
 							if not _is_in_sorted_list(sorted_list,i[1]):
@@ -568,8 +568,8 @@ func _sort_verts():
 
 			else:
 				vert_slice.erase(i)
-				
-				
+
+
 			if len(sorted_list) != 0:
 				var srt = sorted_list[sorted_list.size()-1][0]
 
