@@ -1,8 +1,7 @@
-[gd_scene load_steps=10 format=3 uid="uid://c3w863swgslqe"]
+[gd_scene load_steps=9 format=3 uid="uid://c3w863swgslqe"]
 
 [ext_resource type="Script" path="res://character_controller.gd" id="1_u08ph"]
 [ext_resource type="AudioStream" uid="uid://boqdx7can14oq" path="res://grasswalk.ogg" id="2_mr8ao"]
-[ext_resource type="PackedScene" uid="uid://vuokdfgdnucn" path="res://pause_menu.tscn" id="2_q2khm"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_61hv6"]
 
@@ -56,14 +55,6 @@ mesh = SubResource("CapsuleMesh_5q0gg")
 
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7, 0)
-
-[node name="PauseMenu" parent="Camera3D" instance=ExtResource("2_q2khm")]
-visible = false
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
 
 [node name="Slicer" type="Node3D" parent="Camera3D"]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -0.805088, 0, -1.73878)

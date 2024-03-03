@@ -4,12 +4,15 @@ extends CharacterBody3D
 const SPEED = 8.0
 const JUMP_VELOCITY = 13
 
-@onready var camera = $Camera3D
-@onready var slicer = $Camera3D/Slicer
+@onready var pause_menu = $Camera3D/PauseMenu
+@onready var player_ui  = $"../PlayerUI/Crosshair"
+@onready var camera     = $Camera3D
+@onready var slicer     = $Camera3D/Slicer
 
 var mesh_slicer = MeshSlicer.new()
 
 var locked = false
+var paused = false
 var _rotation_input: float
 var _tilt_input: float
 var _mouse_rotation: Vector3
@@ -29,6 +32,10 @@ func _init():
 
 func _ready():
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+
+func _process(_delta):
+	if Input.is_action_just_pressed('Pause'):
+		pause_game()
 
 func _physics_process(delta):
 
@@ -121,7 +128,6 @@ func _physics_process(delta):
 				#adjust the rigidbody center of mass
 				body2.center_of_mass = body2.to_local(meshinstance.to_global(calculate_center_of_mass(meshes[1])))
 
-
 func _update_camera(delta):
 	_mouse_rotation.x += _tilt_input * delta
 	_mouse_rotation.y += _rotation_input * delta
@@ -140,28 +146,9 @@ func _update_camera(delta):
 
 func _unhandled_input(event):
 
-	#if event is InputEventMouseMotion and Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
-		#rotation.y -= event.relative.x / sensitivity
-		#$Camera3D.rotation.x -= event.relative.y / sensitivity
-		#$Camera3D.rotation.x = clamp($Camera3D.rotation.x, deg_to_rad(-85), deg_to_rad(85))
-
 	if event is InputEventMouseMotion and Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
 		_rotation_input -= event.relative.x / sensitivity
 		_tilt_input -= event.relative.y / sensitivity
-
-
-	elif event is InputEventKey:
-		if event.keycode == KEY_ESCAPE:
-			if event.pressed and not locked:
-				locked = true
-				if Input.mouse_mode != Input.MOUSE_MODE_VISIBLE:
-					Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
-
-				elif Input.mouse_mode == Input.MOUSE_MODE_VISIBLE:
-					Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
-
-			elif not event.pressed:
-				locked = false
 
 	if Input.is_action_pressed("wireframe"):
 		var vp = get_viewport()
@@ -172,7 +159,6 @@ func _unhandled_input(event):
 		slicer.rotate_z(0.1)
 	if Input.is_action_pressed("scroll_down"):
 		slicer.rotate_z(-0.1)
-
 
 func calculate_center_of_mass(mesh:ArrayMesh):
 	#Not sure how well this work
@@ -194,3 +180,17 @@ func calculate_center_of_mass(mesh:ArrayMesh):
 func _play_walk_sound():
 	grass_footstep.pitch_scale = randf_range( .9, 1.08 )
 	grass_footstep.play()
+
+func pause_game():
+	if Input.mouse_mode != Input.MOUSE_MODE_VISIBLE:
+		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
+	elif Input.mouse_mode == Input.MOUSE_MODE_VISIBLE:
+		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+	if paused:
+		pause_menu.hide()
+		player_ui.show()
+	else:
+		pause_menu.show()
+		player_ui.hide()
+
+	paused = !paused

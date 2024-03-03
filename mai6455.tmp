@@ -66,7 +66,7 @@ light_color = Color(1, 0.945098, 0.196078, 1)
 shadow_enabled = true
 script = ExtResource("1_c8lss")
 
-[node name="PlayerUI" parent="." instance=ExtResource("4_g7rne")]
-
 [node name="CHARACTER" parent="." instance=ExtResource("3_aw80d")]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 11.1358)
+
+[node name="PlayerUI" parent="." instance=ExtResource("4_g7rne")]
