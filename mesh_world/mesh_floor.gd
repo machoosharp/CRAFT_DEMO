@@ -29,18 +29,17 @@ func _ready():
 			var y = n.get_noise_2d( x, z ) * 10
 			vs.append( Vector3( x, y, z ) )
 			hs.append( y )
+			nm.append( Vector2( x%2, z%2 ) )
 
 	var vertices := PackedVector3Array( vs )
-
-	for i in range( len( vs ) ):
-
-		var u: Vector3 = vs[i]
-		var row 	   = int(i / leny)
-		var col 	   = i % leny
-
-		nm.append( Vector2( int(u.x/2), int((u.z)/2) ) )
-
 	var normals := PackedVector2Array( nm )
+
+	for i in range( len( hs ) ):
+		var _cur   = hs[ i ]
+		var _below = hs[ (i - leny)%len(hs) ]
+		var _above = hs[ (i + leny)%len(hs) ]
+		var _right = hs[ (i + 1)%len(hs) ]
+		var _left  = hs[ (i - 1)%len(hs) ]
 
 	var idx = []
 
