@@ -45,11 +45,11 @@ func _ready():
 	var idx = []
 
 	for i in range( ( len( vs ) - 2 ) * 2 ):
-		var r = int(i/(lenx-1))%(lenx-1)
-		var l = int(i/((lenx-1)*(leny-1)*2))
+		var r = int(float(i)/(lenx-1))%(lenx-1)
+		var l = int(float(i)/((lenx-1)*(leny-1)*2))
 		var a = (i%(lenx-1)) + (lenx*r) + (l*(lenx*leny))
-		var b = a + lenx + ( int( i / ((lenx-1)*(leny-1)) ) % 2 )
-		var c = b + 1 - ( (lenx + 1) * ( int( i / ((lenx-1)*(leny-1)) ) % 2 ) )
+		var b = a + lenx + ( int( float(i) / ((lenx-1)*(leny-1)) ) % 2 )
+		var c = b + 1 - ( (lenx + 1) * ( int( float(i) / ((lenx-1)*(leny-1)) ) % 2 ) )
 		idx.append( c )
 		idx.append( b )
 		idx.append( a )
@@ -73,9 +73,5 @@ func _ready():
 
 	coll_shape.shape = s
 	
-	coll_shape.position = Vector3((lenx/2)-0.5, 0, (leny/2)-0.5)
+	coll_shape.position = Vector3((float(lenx)/2)-0.5, 0, (float(leny)/2)-0.5)
 
-
-# Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	pass

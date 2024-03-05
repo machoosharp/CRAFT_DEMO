@@ -274,7 +274,7 @@ func slice_mesh(
 
 		var triangulate = Geometry2D.triangulate_polygon(new_polygon)
 
-		for v in range(len(triangulate)/3):
+		for v in range(float(len(triangulate))/3):
 
 			var vert1 = polygon[triangulate[v*3]]
 			var vert2 = polygon[(triangulate[v*3+1])%len(triangulate)]
@@ -334,7 +334,7 @@ func _set_holes(polygons,norm,slice_transform):
 	if len(polygons) <= 1:
 		return polygons
 	else:
-		var closest_point = Vector2.ZERO
+		var _closest_point = Vector2.ZERO
 		for i in range(len(polygons)):
 
 
@@ -351,7 +351,7 @@ func _set_holes(polygons,norm,slice_transform):
 
 				for j in range(len(polygons)):
 
-					var check_dir = Vector3.ZERO
+					var _check_dir = Vector3.ZERO
 					if j != i:
 
 
@@ -372,7 +372,7 @@ func _set_holes(polygons,norm,slice_transform):
 							var point_segment = Geometry2D.get_closest_point_to_segment(point,pos2d,pos2d2)
 							if point_segment.distance_to(point) < closest_dist:
 								closest_dist = point_segment.distance_to(point)
-								closest_point = point_segment
+								_closest_point = point_segment
 
 						if Geometry2D.is_point_in_polygon(point,PackedVector2Array(polygon2d)) == true:
 							is_inside = true
