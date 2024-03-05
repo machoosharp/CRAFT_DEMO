@@ -9,9 +9,12 @@ albedo_texture = ExtResource("1_7tfg8")
 
 [sub_resource type="CylinderMesh" id="CylinderMesh_mieo3"]
 material = SubResource("StandardMaterial3D_0di60")
+radial_segments = 12
+rings = 1
 
 [node name="LOG" type="RigidBody3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 1, 0)
+center_of_mass_mode = 1
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("CylinderShape3D_87rq4")

@@ -76,6 +76,14 @@ func _physics_process(delta):
 
 	move_and_slide()
 
+	# push rigidbody
+	for i in get_slide_collision_count():
+		var collision = get_slide_collision(i)
+		for j in collision.get_collision_count():
+			var obj = collision.get_collider(j)
+			if obj is RigidBody3D:
+				obj.apply_central_impulse(position.direction_to(obj.position)/2)
+
 	if Input.is_action_just_pressed("left_mouse"):
 		for body in $Camera3D/Slicer/Area3D.get_overlapping_bodies().duplicate():
 			if body is RigidBody3D:
