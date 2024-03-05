@@ -164,7 +164,7 @@ func calculate_center_of_mass(mesh:ArrayMesh):
 	#Not sure how well this work
 	var meshVolume = 0
 	var temp = Vector3(0,0,0)
-	for i in range(len(mesh.get_faces())/3):
+	for i in range(float(len(mesh.get_faces()))/3):
 		var v1 = mesh.get_faces()[i]
 		var v2 = mesh.get_faces()[i+1]
 		var v3 = mesh.get_faces()[i+2]
