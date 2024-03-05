@@ -186,11 +186,14 @@ func pause_game():
 		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	elif Input.mouse_mode == Input.MOUSE_MODE_VISIBLE:
 		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
-	if paused:
-		pause_menu.hide()
-		player_ui.show()
-	else:
-		pause_menu.show()
-		player_ui.hide()
+	if player_ui is Control:
+
+		if paused:
+			pause_menu.hide()
+			player_ui.show()
+
+		else:
+			pause_menu.show()
+			player_ui.hide()
 
 	paused = !paused
