@@ -1,0 +1,55 @@
+[gd_scene load_steps=4 format=3 uid="uid://vuokdfgdnucn"]
+
+[ext_resource type="Script" path="res://pause_menu.gd" id="1_s5qep"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_trrus"]
+noise_type = 2
+frequency = 0.0213
+offset = Vector3(-607.14, 0, 0)
+fractal_octaves = 1
+fractal_weighted_strength = 1.0
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_dcsvm"]
+width = 256
+height = 48
+as_normal_map = true
+bump_strength = 17.9
+noise = SubResource("FastNoiseLite_trrus")
+
+[node name="PauseMenu" type="Control"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("1_s5qep")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="."]
+layout_mode = 1
+anchors_preset = 8
+anchor_left = 0.5
+anchor_top = 0.5
+anchor_right = 0.5
+anchor_bottom = 0.5
+offset_left = -132.0
+offset_top = -58.0
+offset_right = 132.0
+offset_bottom = 58.0
+grow_horizontal = 2
+grow_vertical = 2
+
+[node name="Resume" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+text = "Resume"
+icon = SubResource("NoiseTexture2D_dcsvm")
+icon_alignment = 1
+
+[node name="Exit" type="Button" parent="VBoxContainer"]
+layout_mode = 2
+text = "Exit"
+icon = SubResource("NoiseTexture2D_dcsvm")
+icon_alignment = 1
+
+[connection signal="pressed" from="VBoxContainer/Resume" to="." method="_on_resume_pressed"]
+[connection signal="pressed" from="VBoxContainer/Exit" to="." method="_on_exit_pressed"]
