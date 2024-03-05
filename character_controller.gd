@@ -64,7 +64,7 @@ func _physics_process(delta):
 		velocity.z = move_toward(velocity.z, 0, SPEED)
 
 	if position.y < -100:
-		position = Vector3(0, 0, 0)
+		position = Vector3(0, 1, 0)
 
 	move_and_slide()
 
