@@ -71,7 +71,7 @@ func _physics_process(delta):
 		velocity.z = move_toward(velocity.z, 0, SPEED)
 
 	if position.y < -100:
-		position = Vector3(0, 0, 0)
+		position = Vector3(0, 1, 0)
 
 	move_and_slide()
 
@@ -164,7 +164,7 @@ func calculate_center_of_mass(mesh:ArrayMesh):
 	#Not sure how well this work
 	var meshVolume = 0
 	var temp = Vector3(0,0,0)
-	for i in range(len(mesh.get_faces())/3):
+	for i in range(float(len(mesh.get_faces()))/3):
 		var v1 = mesh.get_faces()[i]
 		var v2 = mesh.get_faces()[i+1]
 		var v3 = mesh.get_faces()[i+2]
@@ -186,11 +186,14 @@ func pause_game():
 		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	elif Input.mouse_mode == Input.MOUSE_MODE_VISIBLE:
 		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
-	if paused:
-		pause_menu.hide()
-		player_ui.show()
-	else:
-		pause_menu.show()
-		player_ui.hide()
+	if player_ui is Control:
+
+		if paused:
+			pause_menu.hide()
+			player_ui.show()
+
+		else:
+			pause_menu.show()
+			player_ui.hide()
 
 	paused = !paused

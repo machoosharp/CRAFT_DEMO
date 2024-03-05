@@ -1,0 +1,39 @@
+[gd_scene load_steps=9 format=3 uid="uid://die7gyg07q6yq"]
+
+[ext_resource type="Script" path="res://minecraft_clone/gen_world.gd" id="1_h64t3"]
+[ext_resource type="PackedScene" uid="uid://dyyamnvj5tkx8" path="res://minecraft_clone/block3.tscn" id="2_qo5we"]
+[ext_resource type="PackedScene" uid="uid://c4xr584bs2rj3" path="res://minecraft_clone/block1.tscn" id="3_oe6a4"]
+[ext_resource type="PackedScene" uid="uid://ciylg3bc5ygv7" path="res://minecraft_clone/block2.tscn" id="4_2jwtp"]
+[ext_resource type="PackedScene" uid="uid://c3w863swgslqe" path="res://character.tscn" id="5_lkjm3"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_qqjob"]
+sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+
+[sub_resource type="Sky" id="Sky_e7r4g"]
+sky_material = SubResource("ProceduralSkyMaterial_qqjob")
+
+[sub_resource type="Environment" id="Environment_6ta0p"]
+background_mode = 2
+sky = SubResource("Sky_e7r4g")
+tonemap_mode = 2
+glow_enabled = true
+
+[node name="Node3D" type="Node3D"]
+script = ExtResource("1_h64t3")
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_6ta0p")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866023, -0.433016, 0.250001, 0, 0.499998, 0.866027, -0.500003, 0.749999, -0.43301, 0, 0, 0)
+shadow_enabled = true
+
+[node name="DIRT_BLOCK" parent="." instance=ExtResource("2_qo5we")]
+
+[node name="GRASS_BLOCK" parent="." instance=ExtResource("3_oe6a4")]
+
+[node name="SAND_BLOCK" parent="." instance=ExtResource("4_2jwtp")]
+
+[node name="CHARACTER" parent="." instance=ExtResource("5_lkjm3")]
+transform = Transform3D(-0.737655, 0, -0.675178, 0, 1, 0, 0.675178, 0, -0.737655, 0, 161.98, 0)

@@ -1,9 +1,9 @@
 extends Control
 
-@onready var char = $"../.."
+@onready var character = $"../.."
 
 func _on_resume_pressed():
-	char.pause_game()
+	character.pause_game()
 
 func _on_exit_pressed():
 	get_tree().quit()
