@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://3ow4gck0gxat"]
 
-[ext_resource type="Texture2D" uid="uid://bq0221sccs21l" path="res://grass-9843-in-architextures.png" id="1_8br6h"]
+[ext_resource type="Texture2D" uid="uid://bq0221sccs21l" path="res://textures/grass-9843-in-architextures.png" id="1_8br6h"]
 
 [sub_resource type="BoxShape3D" id="BoxShape3D_wtmu6"]
 size = Vector3(10, 0.9, 10)

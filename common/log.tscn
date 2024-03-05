@@ -1,6 +1,6 @@
 [gd_scene load_steps=5 format=3 uid="uid://bdv1drd2fve82"]
 
-[ext_resource type="Texture2D" uid="uid://cobykeb0pcsxa" path="res://wood_texture.png" id="1_7tfg8"]
+[ext_resource type="Texture2D" uid="uid://cobykeb0pcsxa" path="res://textures/wood_texture.png" id="1_7tfg8"]
 
 [sub_resource type="CylinderShape3D" id="CylinderShape3D_87rq4"]
 

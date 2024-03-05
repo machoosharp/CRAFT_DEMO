@@ -24,6 +24,7 @@ var _camera_rotation: Vector3
 @onready var body_store = $"../RigidBodiesStore"
 @onready var grass_footstep = $Audios/GrassFootstep
 @onready var walk_animation = $AnimationPlayers/WalkAnimation
+
 # Get the gravity from the project settings to be synced with RigidBody nodes.
 var gravity = ProjectSettings.get_setting("physics/3d/default_gravity") * 5
 
@@ -79,37 +80,39 @@ func _physics_process(delta):
 		for body in $Camera3D/Slicer/Area3D.get_overlapping_bodies().duplicate():
 			if body is RigidBody3D:
 
+				# The plane transform at the rigidbody local transform
+				var meshinstance  = body.get_node("MeshInstance3D")
+				var Transform     = Transform3D.IDENTITY
+				Transform.origin  = meshinstance.to_local( ( slicer.global_transform.origin ) )
+				Transform.basis.x = meshinstance.to_local( ( slicer.global_transform.basis.x+body.global_position ) )
+				Transform.basis.y = meshinstance.to_local( ( slicer.global_transform.basis.y+body.global_position ) )
+				Transform.basis.z = meshinstance.to_local( ( slicer.global_transform.basis.z+body.global_position ) )
 
-				#The plane transform at the rigidbody local transform
-				var meshinstance = body.get_node("MeshInstance3D")
-				var Transform = Transform3D.IDENTITY
-				Transform.origin = meshinstance.to_local((slicer.global_transform.origin))
-				Transform.basis.x = meshinstance.to_local((slicer.global_transform.basis.x+body.global_position))
-				Transform.basis.y = meshinstance.to_local((slicer.global_transform.basis.y+body.global_position))
-				Transform.basis.z = meshinstance.to_local((slicer.global_transform.basis.z+body.global_position))
+				var collision = body.get_node( "CollisionShape3D" )
 
-
-
-				var collision = body.get_node("CollisionShape3D")
-
-				#Slice the mesh
-				var meshes = mesh_slicer.slice_mesh(Transform,meshinstance.mesh,null)
+				# Slice the mesh
+				var meshes = mesh_slicer.slice_mesh( Transform, meshinstance.mesh, null )
 
 				meshinstance.mesh = meshes[0]
 
-				#generate collision
+				# generate collision
 				if len(meshes[0].get_faces()) > 2:
 					collision.shape = meshes[0].create_convex_shape()
 
-				#adjust the rigidbody center of mass
+				# adjust the rigidbody center of mass
 				body.center_of_mass_mode = 1
-				body.center_of_mass = body.to_local(meshinstance.to_global(calculate_center_of_mass(meshes[0])))
+				body.center_of_mass = body.to_local(
+					meshinstance.to_global(
+						calculate_center_of_mass( meshes[0] )
+					)
+				)
 
 				#second half of the mesh
 				var body2 = body.duplicate()
+
 				body_store.add_child(body2)
 				meshinstance = body2.get_node("MeshInstance3D")
-				collision = body2.get_node("CollisionShape3D")
+				collision    = body2.get_node("CollisionShape3D")
 				meshinstance.mesh = meshes[1]
 
 				#generate collision

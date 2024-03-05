@@ -1,6 +1,6 @@
 [gd_scene load_steps=4 format=3 uid="uid://qc3mwf080tw"]
 
-[ext_resource type="Script" path="res://main_menu.gd" id="1_1pedo"]
+[ext_resource type="Script" path="res://common/scripts/main_menu.gd" id="1_1pedo"]
 
 [sub_resource type="FastNoiseLite" id="FastNoiseLite_trrus"]
 noise_type = 2

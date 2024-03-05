@@ -1,8 +1,8 @@
 [gd_scene load_steps=10 format=3 uid="uid://c3w863swgslqe"]
 
-[ext_resource type="Script" path="res://character_controller.gd" id="1_u08ph"]
-[ext_resource type="AudioStream" uid="uid://boqdx7can14oq" path="res://grasswalk.ogg" id="2_mr8ao"]
-[ext_resource type="PackedScene" uid="uid://vuokdfgdnucn" path="res://pause_menu.tscn" id="2_q2khm"]
+[ext_resource type="Script" path="res://common/scripts/character_controller.gd" id="1_tnlc5"]
+[ext_resource type="PackedScene" uid="uid://vuokdfgdnucn" path="res://common/pause_menu.tscn" id="2_q2khm"]
+[ext_resource type="AudioStream" uid="uid://boqdx7can14oq" path="res://audio/grasswalk.ogg" id="3_0mvly"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_61hv6"]
 
@@ -46,7 +46,7 @@ _data = {
 [node name="CHARACTER" type="CharacterBody3D"]
 floor_stop_on_slope = false
 floor_block_on_wall = false
-script = ExtResource("1_u08ph")
+script = ExtResource("1_tnlc5")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 shape = SubResource("CapsuleShape3D_61hv6")
@@ -79,7 +79,7 @@ shape = SubResource("BoxShape3D_iqr4d")
 [node name="Audios" type="Node3D" parent="."]
 
 [node name="GrassFootstep" type="AudioStreamPlayer" parent="Audios"]
-stream = ExtResource("2_mr8ao")
+stream = ExtResource("3_0mvly")
 volume_db = -8.0
 pitch_scale = 1.25
 

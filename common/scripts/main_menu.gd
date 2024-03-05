@@ -4,7 +4,7 @@ extends Control
 
 func _on_chop_log_pressed():
 	print('log chop')
-	get_tree().change_scene_to_file("res://main.tscn")
+	get_tree().change_scene_to_file("res://chop_log/main.tscn")
 
 func _on_mesh_proc_pressed():
 	print('mesh world')

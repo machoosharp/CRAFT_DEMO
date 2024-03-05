@@ -11,9 +11,10 @@ config_version=5
 [application]
 
 config/name="CRAFT_DEMO"
-run/main_scene="res://main_menu.tscn"
+run/main_scene="res://common/main_menu.tscn"
 config/features=PackedStringArray("4.2", "Forward Plus")
-config/icon="res://icon.svg"
+boot_splash/bg_color=Color(0.0156863, 0.247059, 0.207843, 1)
+config/icon="res://textures/grass-9843-in-architextures.png"
 
 [debug]
 

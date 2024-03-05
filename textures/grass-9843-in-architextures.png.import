@@ -2,8 +2,8 @@
 
 importer="texture"
 type="CompressedTexture2D"
-uid="uid://cobykeb0pcsxa"
-path.s3tc="res://.godot/imported/wood_texture.png-2e40e28c915d7c909938db9722ba1d43.s3tc.ctex"
+uid="uid://bq0221sccs21l"
+path.s3tc="res://.godot/imported/grass-9843-in-architextures.png-1a737b4e91abf4cdd45250fd908bb03d.s3tc.ctex"
 metadata={
 "imported_formats": ["s3tc_bptc"],
 "vram_texture": true
@@ -11,8 +11,8 @@ metadata={
 
 [deps]
 
-source_file="res://wood_texture.png"
-dest_files=["res://.godot/imported/wood_texture.png-2e40e28c915d7c909938db9722ba1d43.s3tc.ctex"]
+source_file="res://textures/grass-9843-in-architextures.png"
+dest_files=["res://.godot/imported/grass-9843-in-architextures.png-1a737b4e91abf4cdd45250fd908bb03d.s3tc.ctex"]
 
 [params]
 
