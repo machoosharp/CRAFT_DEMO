@@ -1,0 +1,190 @@
+[gd_scene load_steps=8 format=3 uid="uid://d0qbwi742io7s"]
+
+[ext_resource type="Texture2D" uid="uid://cobykeb0pcsxa" path="res://textures/wood_texture.png" id="1_x6fw8"]
+[ext_resource type="Texture2D" uid="uid://bq0221sccs21l" path="res://textures/grass-9843-in-architextures.png" id="2_v1gog"]
+
+[sub_resource type="CylinderShape3D" id="CylinderShape3D_87rq4"]
+height = 8.0
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_0di60"]
+albedo_texture = ExtResource("1_x6fw8")
+
+[sub_resource type="CylinderMesh" id="CylinderMesh_mieo3"]
+material = SubResource("StandardMaterial3D_0di60")
+height = 8.0
+radial_segments = 12
+rings = 1
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_ijf1r"]
+albedo_color = Color(0.435294, 0.568627, 0.290196, 1)
+albedo_texture = ExtResource("2_v1gog")
+uv1_scale = Vector3(0.215, 0.095, 0.075)
+
+[sub_resource type="SphereMesh" id="SphereMesh_awgih"]
+material = SubResource("StandardMaterial3D_ijf1r")
+radius = 1.0
+height = 1.914
+radial_segments = 4
+rings = 3
+
+[node name="LOG" type="RigidBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 4, 0)
+center_of_mass_mode = 1
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="."]
+shape = SubResource("CylinderShape3D_87rq4")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="."]
+mesh = SubResource("CylinderMesh_mieo3")
+
+[node name="leaves" type="Node3D" parent="."]
+
+[node name="MeshInstance3D2" type="MeshInstance3D" parent="leaves"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, -1.43501, 2.96669, 0.459375)
+mesh = SubResource("SphereMesh_awgih")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D3" type="MeshInstance3D" parent="leaves"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.0993415, 2.86433, 0.57021)
+mesh = SubResource("SphereMesh_awgih")
+skeleton = NodePath("../MeshInstance3D2")
+
+[node name="MeshInstance3D4" type="MeshInstance3D" parent="leaves"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.987256, 3.21189, -0.212273)
+mesh = SubResource("SphereMesh_awgih")
+skeleton = NodePath("../MeshInstance3D2")
+
+[node name="MeshInstance3D5" type="MeshInstance3D" parent="leaves"]
+transform = Transform3D(0.860084, 0, -0.510153, 0, 1, 0, 0.510153, 0, 0.860084, -1.09171, 3.46385, -0.35277)
+mesh = SubResource("SphereMesh_awgih")
+skeleton = NodePath("../MeshInstance3D2")
+
+[node name="MeshInstance3D6" type="MeshInstance3D" parent="leaves"]
+transform = Transform3D(0.540549, 0, 0.841313, 0, 1, 0, -0.841313, 0, 0.540549, 0.351868, 3.02576, 1.37238)
+mesh = SubResource("SphereMesh_awgih")
+skeleton = NodePath("../MeshInstance3D2")
+
+[node name="MeshInstance3D7" type="MeshInstance3D" parent="leaves"]
+transform = Transform3D(0.779546, 0, 0.626345, 0, 1, 0, -0.626345, 0, 0.779546, -0.978666, 2.77092, -1.05737)
+mesh = SubResource("SphereMesh_awgih")
+skeleton = NodePath("../MeshInstance3D2")
+
+[node name="MeshInstance3D8" type="MeshInstance3D" parent="leaves"]
+transform = Transform3D(0.885808, 0, -0.464054, 0, 1, 0, 0.464054, 0, 0.885808, 1.4041, 2.89531, 0.720759)
+mesh = SubResource("SphereMesh_awgih")
+skeleton = NodePath("../MeshInstance3D2")
+
+[node name="MeshInstance3D9" type="MeshInstance3D" parent="leaves"]
+transform = Transform3D(0.444479, 0, -0.895789, 0, 1, 0, 0.895789, 0, 0.444479, -0.765406, 3.19631, 1.42077)
+mesh = SubResource("SphereMesh_awgih")
+skeleton = NodePath("../MeshInstance3D2")
+
+[node name="MeshInstance3D10" type="MeshInstance3D" parent="leaves"]
+transform = Transform3D(0.0267353, 0, -0.999643, 0, 1, 0, 0.999643, 0, 0.0267353, 0.947248, 3.06443, -1.05988)
+mesh = SubResource("SphereMesh_awgih")
+skeleton = NodePath("../MeshInstance3D2")
+
+[node name="MeshInstance3D13" type="MeshInstance3D" parent="leaves"]
+transform = Transform3D(0.999796, 0, -0.0201921, 0, 1, 0, 0.0201921, 0, 0.999796, 0.0415416, 3.18128, -1.17504)
+mesh = SubResource("SphereMesh_awgih")
+skeleton = NodePath("../MeshInstance3D2")
+
+[node name="MeshInstance3D11" type="MeshInstance3D" parent="leaves"]
+transform = Transform3D(1.17139, 0, -0.999721, 0, 1.54, 0, 0.999721, 0, 1.17139, -1.35572, 3.96825, -0.537192)
+mesh = SubResource("SphereMesh_awgih")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D12" type="MeshInstance3D" parent="leaves"]
+transform = Transform3D(1.17139, 0, -0.999721, 0, 1.54, 0, 0.999721, 0, 1.17139, -0.260573, 3.86589, 0.543166)
+mesh = SubResource("SphereMesh_awgih")
+skeleton = NodePath("../MeshInstance3D2")
+
+[node name="MeshInstance3D14" type="MeshInstance3D" parent="leaves"]
+transform = Transform3D(1.17139, 0, -0.999721, 0, 1.54, 0, 0.999721, 0, 1.17139, 0.922777, 4.21345, 0.524382)
+mesh = SubResource("SphereMesh_awgih")
+skeleton = NodePath("../MeshInstance3D2")
+
+[node name="MeshInstance3D15" type="MeshInstance3D" parent="leaves"]
+transform = Transform3D(0.497485, 0, -1.45743, 0, 1.54, 0, 1.45743, 0, 0.497485, -0.567366, 4.46541, -0.932084)
+mesh = SubResource("SphereMesh_awgih")
+skeleton = NodePath("../MeshInstance3D2")
+
+[node name="MeshInstance3D16" type="MeshInstance3D" parent="leaves"]
+transform = Transform3D(1.47427, 0, 0.445109, 0, 1.54, 0, -0.445109, 0, 1.47427, -0.589237, 4.02732, 1.31727)
+mesh = SubResource("SphereMesh_awgih")
+skeleton = NodePath("../MeshInstance3D2")
+
+[node name="MeshInstance3D17" type="MeshInstance3D" parent="leaves"]
+transform = Transform3D(1.53932, 0, -0.0456323, 0, 1.54, 0, 0.0456323, 0, 1.53932, -0.0239796, 3.77248, -1.39465)
+mesh = SubResource("SphereMesh_awgih")
+skeleton = NodePath("../MeshInstance3D2")
+
+[node name="MeshInstance3D18" type="MeshInstance3D" parent="leaves"]
+transform = Transform3D(0.573703, 0, -1.42915, 0, 1.54, 0, 1.42915, 0, 0.573703, 0.634155, 3.89687, 1.50469)
+mesh = SubResource("SphereMesh_awgih")
+skeleton = NodePath("../MeshInstance3D2")
+
+[node name="MeshInstance3D19" type="MeshInstance3D" parent="leaves"]
+transform = Transform3D(-0.37488, 0, -1.49367, 0, 1.54, 0, 1.49367, 0, -0.37488, -1.4705, 4.19788, 0.628771)
+mesh = SubResource("SphereMesh_awgih")
+skeleton = NodePath("../MeshInstance3D2")
+
+[node name="MeshInstance3D20" type="MeshInstance3D" parent="leaves"]
+transform = Transform3D(-0.968046, 0, -1.1977, 0, 1.54, 0, 1.1977, 0, -0.968046, 1.44258, 4.06599, -0.146313)
+mesh = SubResource("SphereMesh_awgih")
+skeleton = NodePath("../MeshInstance3D2")
+
+[node name="MeshInstance3D21" type="MeshInstance3D" parent="leaves"]
+transform = Transform3D(1.15097, 0, -1.02317, 0, 1.54, 0, 1.02317, 0, 1.15097, 0.828425, 4.18284, -0.82187)
+mesh = SubResource("SphereMesh_awgih")
+skeleton = NodePath("../MeshInstance3D2")
+
+[node name="MeshInstance3D22" type="MeshInstance3D" parent="leaves"]
+transform = Transform3D(0.257807, 0, -0.966196, 0, 1, 0, 0.966196, 0, 0.257807, -0.780118, 5.32631, -1.17468)
+mesh = SubResource("SphereMesh_awgih")
+skeleton = NodePath("../..")
+
+[node name="MeshInstance3D23" type="MeshInstance3D" parent="leaves"]
+transform = Transform3D(0.257807, 0, -0.966196, 0, 1, 0, 0.966196, 0, 0.257807, -0.49164, 5.22396, 0.336372)
+mesh = SubResource("SphereMesh_awgih")
+skeleton = NodePath("../MeshInstance3D2")
+
+[node name="MeshInstance3D24" type="MeshInstance3D" parent="leaves"]
+transform = Transform3D(0.257807, 0, -0.966196, 0, 1, 0, 0.966196, 0, 0.257807, 0.493303, 5.57151, 0.992542)
+mesh = SubResource("SphereMesh_awgih")
+skeleton = NodePath("../MeshInstance3D2")
+
+[node name="MeshInstance3D25" type="MeshInstance3D" parent="leaves"]
+transform = Transform3D(-0.271172, 0, -0.962531, 0, 1, 0, 0.962531, 0, -0.271172, 0.0930789, 5.82347, -1.05236)
+mesh = SubResource("SphereMesh_awgih")
+skeleton = NodePath("../MeshInstance3D2")
+
+[node name="MeshInstance3D26" type="MeshInstance3D" parent="leaves"]
+transform = Transform3D(0.952231, 0, -0.30538, 0, 1, 0, 0.30538, 0, 0.952231, -1.20159, 5.38539, 0.787169)
+mesh = SubResource("SphereMesh_awgih")
+skeleton = NodePath("../MeshInstance3D2")
+
+[node name="MeshInstance3D27" type="MeshInstance3D" parent="leaves"]
+transform = Transform3D(0.806145, 0, -0.591718, 0, 1, 0, 0.591718, 0, 0.806145, 0.803001, 5.13054, -1.1248)
+mesh = SubResource("SphereMesh_awgih")
+skeleton = NodePath("../MeshInstance3D2")
+
+[node name="MeshInstance3D28" type="MeshInstance3D" parent="leaves"]
+transform = Transform3D(-0.22, 0, -0.975501, 0, 1, 0, 0.975501, 0, -0.22, -0.300723, 5.25494, 1.63584)
+mesh = SubResource("SphereMesh_awgih")
+skeleton = NodePath("../MeshInstance3D2")
+
+[node name="MeshInstance3D29" type="MeshInstance3D" parent="leaves"]
+transform = Transform3D(-0.750919, 0, -0.660395, 0, 1, 0, 0.660395, 0, -0.750919, -1.53639, 5.55594, -0.279864)
+mesh = SubResource("SphereMesh_awgih")
+skeleton = NodePath("../MeshInstance3D2")
+
+[node name="MeshInstance3D30" type="MeshInstance3D" parent="leaves"]
+transform = Transform3D(-0.958958, 0, -0.283547, 0, 1, 0, 0.283547, 0, -0.958958, 1.30194, 5.42406, 0.735368)
+mesh = SubResource("SphereMesh_awgih")
+skeleton = NodePath("../MeshInstance3D2")
+
+[node name="MeshInstance3D31" type="MeshInstance3D" parent="leaves"]
+transform = Transform3D(0.238245, 0, -0.971205, 0, 1, 0, 0.971205, 0, 0.238245, 1.17971, 5.54091, -0.169413)
+mesh = SubResource("SphereMesh_awgih")
+skeleton = NodePath("../MeshInstance3D2")

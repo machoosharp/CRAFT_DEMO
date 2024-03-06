@@ -9,8 +9,6 @@ func _process(delta):
 	var day_speed = 200.0
 	
 	var ticks = Time.get_ticks_msec() * 0.1
-	
-	print(ticks)
 
 	var t = ( int( ticks ) ) / day_speed
 

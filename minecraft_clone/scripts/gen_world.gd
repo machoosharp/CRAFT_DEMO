@@ -34,12 +34,12 @@ func _ready():
 			else:
 				tt = new_grass
 
-			tt.position = Vector3(x, int(h*100)+100, y)
+			tt.position = Vector3(x, int(h*50)+50, y)
 			self.add_child(tt)
 
-			for i in range((h*100)+100):
+			for i in range((h*50)+50):
 				var new_dirt: Node3D  = dirt_block.duplicate()
-				new_dirt.position = Vector3(x, i, y)
+				new_dirt.position = Vector3(x, i+1, y)
 				self.add_child(new_dirt)
 
 	grass_block.queue_free()
