@@ -7,6 +7,8 @@ extends StaticBody3D
 
 @onready var coll_shape = $CollisionShape3D
 @onready var mesh_instance = $MeshInstance3D
+@onready var tree = $"../logs/LOG"
+@onready var logs = $"../logs"
 
 
 var n = FastNoiseLite.new()
@@ -16,23 +18,45 @@ var n2 = FastNoiseLite.new()
 # Called when the node enters the scene tree for the first time.
 func _ready():
 	
+	n.set_seed(randi())
+	n2.set_seed(randi())
+	
 	a_mesh = ArrayMesh.new()
 
-	var lenx = 30
-	var leny = 30
+	var lenx = 300
+	var leny = 300
 
 	var vs = []
 	var hs = []
-	var nm = []
+	var uv = []
+	var nms = []
+	var done_tree = 0
 	for z in range(lenx):
 		for x in range(leny):
 			var y = n.get_noise_2d( x, z ) * 10
+			var t = n2.get_noise_2d( x, z )
 			vs.append( Vector3( x, y, z ) )
 			hs.append( y )
-			nm.append( Vector2( x%2, z%2 ) )
+			uv.append( Vector2( x%2, z%2 ) )
+			nms.append( Vector3( 0, 1, 0 ) )
+			
+			if t > 0.3:
+				if done_tree == 0:
+					var new_tree = tree.duplicate()
+					new_tree.position = Vector3( x, y+4, z)
+					logs.add_child(new_tree)
+					done_tree += 1
+				else:
+					if done_tree < 50:
+						done_tree += 1
+					else:
+						done_tree = 0
+				
+				
 
 	var vertices := PackedVector3Array( vs )
-	var normals := PackedVector2Array( nm )
+	var uvs := PackedVector2Array( uv )
+	var normals := PackedVector3Array( nms )
 
 	for i in range( len( hs ) ):
 		var _cur   = hs[ i ]
@@ -59,7 +83,8 @@ func _ready():
 	array.resize(Mesh.ARRAY_MAX)
 	array[Mesh.ARRAY_VERTEX] = vertices 
 	array[Mesh.ARRAY_INDEX]  = indices
-	array[Mesh.ARRAY_TEX_UV] = normals
+	array[Mesh.ARRAY_TEX_UV] = uvs
+	array[Mesh.ARRAY_NORMAL] = normals
 	a_mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, array)
 	mesh_instance.mesh = a_mesh
 
