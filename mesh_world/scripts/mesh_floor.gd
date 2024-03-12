@@ -1,4 +1,4 @@
-@tool
+#@tool
 extends StaticBody3D
 
 @export var update = false
@@ -11,15 +11,21 @@ extends StaticBody3D
 @onready var logs = $"../logs"
 
 
-var n = FastNoiseLite.new()
+var n1 = FastNoiseLite.new()
 var n2 = FastNoiseLite.new()
+var n3 = FastNoiseLite.new()
+var n4 = FastNoiseLite.new()
 
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
+
+	var surface_tool := SurfaceTool.new()
 	
-	n.set_seed(randi())
+	n1.set_seed(randi())
 	n2.set_seed(randi())
+	n3.set_seed(randi())
+	n4.set_seed(randi())
 	
 	a_mesh = ArrayMesh.new()
 
@@ -33,13 +39,17 @@ func _ready():
 	var done_tree = 0
 	for z in range(lenx):
 		for x in range(leny):
-			var y = n.get_noise_2d( x, z ) * 10
+			var y = n1.get_noise_2d( x, z )
 			var t = n2.get_noise_2d( x, z )
-			vs.append( Vector3( x, y, z ) )
-			hs.append( y )
-			uv.append( Vector2( x%2, z%2 ) )
-			nms.append( Vector3( 0, 1, 0 ) )
-			
+			var b = n3.get_noise_2d( x, z )
+			var h = n4.get_noise_2d( x, z )
+
+			y = (y+h) * 10
+
+			vs.append(  Vector3( x, y, z ) )
+			hs.append(  y )
+			uv.append(  Vector2( x%2, z%2 ) )
+
 			if t > 0.3:
 				if done_tree == 0:
 					var new_tree = tree.duplicate()
@@ -51,19 +61,24 @@ func _ready():
 						done_tree += 1
 					else:
 						done_tree = 0
-				
-				
+
+	for i in range( len( vs ) ):
+
+		var _cur   : Vector3 = vs[ i ]
+		var _above : Vector3 = vs[ (i + leny) % len(vs) ]
+		var _right : Vector3 = vs[ (i + 1) % len(vs) ]
+
+		var vx = _cur - _above
+
+		var vz = _cur - _right
+
+		var vy = vx.cross( vz )
+
+		nms.append( vy )
 
 	var vertices := PackedVector3Array( vs )
 	var uvs := PackedVector2Array( uv )
 	var normals := PackedVector3Array( nms )
-
-	for i in range( len( hs ) ):
-		var _cur   = hs[ i ]
-		var _below = hs[ (i - leny)%len(hs) ]
-		var _above = hs[ (i + leny)%len(hs) ]
-		var _right = hs[ (i + 1)%len(hs) ]
-		var _left  = hs[ (i - 1)%len(hs) ]
 
 	var idx = []
 
@@ -88,14 +103,20 @@ func _ready():
 	a_mesh.add_surface_from_arrays(Mesh.PRIMITIVE_TRIANGLES, array)
 	mesh_instance.mesh = a_mesh
 
-	var s: HeightMapShape3D = coll_shape.shape
+	# for num "i" each surface in the Mesh
+	for i in range( a_mesh.get_surface_count() ):
 
-	s.map_width = lenx
-	s.map_depth = leny
+		# Creates a vertex array from an existing Mesh.
+		surface_tool.create_from( a_mesh, i )
 
-	s.map_data  = hs
+	var hmap = HeightMapShape3D.new()
+	
+	hmap.map_width = lenx
+	hmap.map_depth = leny
+	
+	hmap.map_data  = hs
 
-	coll_shape.shape = s
+	coll_shape.shape = hmap
 	
 	coll_shape.position = Vector3((float(lenx)/2)-0.5, 0, (float(leny)/2)-0.5)
 
