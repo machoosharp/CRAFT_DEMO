@@ -33,6 +33,7 @@ func _init():
 
 func _ready():
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+	camera.current = is_multiplayer_authority()
 
 func _process(_delta):
 	if Input.is_action_just_pressed('Pause'):
@@ -45,124 +46,124 @@ func _physics_process(delta):
 		velocity.y -= gravity * delta
 
 	_update_camera(delta)
+	if is_multiplayer_authority():
+		# Handle jump.
+		if Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
+			if Input.is_action_just_pressed("up") and is_on_floor():
+				velocity.y = JUMP_VELOCITY
 
-	# Handle jump.
-	if Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
-		if Input.is_action_just_pressed("up") and is_on_floor():
-			velocity.y = JUMP_VELOCITY
+			# Get the input direction and handle the movement/deceleration.
+			# As good practice, you should replace UI actions with custom gameplay actions.
+			var input_dir = Input.get_vector("left", "right", "forward", "backward")
+			var direction = (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
 
-		# Get the input direction and handle the movement/deceleration.
-		# As good practice, you should replace UI actions with custom gameplay actions.
-		var input_dir = Input.get_vector("left", "right", "forward", "backward")
-		var direction = (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
+			if direction:
+				velocity.x = direction.x * SPEED
+				velocity.z = direction.z * SPEED
 
-		if direction:
-			velocity.x = direction.x * SPEED
-			velocity.z = direction.z * SPEED
+				# Footstep Logic
+				if is_on_floor():
+					walk_animation.play( 'walking' )
 
-			# Footstep Logic
-			if is_on_floor():
-				walk_animation.play( 'walking' )
-
+			else:
+				velocity.x = move_toward(velocity.x, 0, SPEED)
+				velocity.z = move_toward(velocity.z, 0, SPEED)
 		else:
 			velocity.x = move_toward(velocity.x, 0, SPEED)
 			velocity.z = move_toward(velocity.z, 0, SPEED)
-	else:
-		velocity.x = move_toward(velocity.x, 0, SPEED)
-		velocity.z = move_toward(velocity.z, 0, SPEED)
 
-	if position.y < -100:
-		position = Vector3(0, 1, 0)
+		if position.y < -100:
+			position = Vector3(0, 1, 0)
 
-	move_and_slide()
+		move_and_slide()
 
-	# push rigidbody
-	for i in get_slide_collision_count():
-		var collision = get_slide_collision(i)
-		for j in collision.get_collision_count():
-			var obj = collision.get_collider(j)
-			if obj is RigidBody3D:
-				obj.apply_central_impulse(position.direction_to(obj.position)/2)
+		# push rigidbody
+		for i in get_slide_collision_count():
+			var collision = get_slide_collision(i)
+			for j in collision.get_collision_count():
+				var obj = collision.get_collider(j)
+				if obj is RigidBody3D:
+					obj.apply_central_impulse(position.direction_to(obj.position)/2)
 
-	if Input.is_action_just_pressed( "left_mouse" ):
-		for body in $Camera3D/Slicer/Area3D.get_overlapping_bodies().duplicate():
-			if body is RigidBody3D:
+		if Input.is_action_just_pressed( "left_mouse" ):
+			for body in $Camera3D/Slicer/Area3D.get_overlapping_bodies().duplicate():
+				if body is RigidBody3D:
 
-				# Mesh instance of the body the slicer is going to slice
-				var meshinstance: MeshInstance3D = body.get_node( "MeshInstance3D" )
+					# Mesh instance of the body the slicer is going to slice
+					var meshinstance: MeshInstance3D = body.get_node( "MeshInstance3D" )
 
-				# empty transform object
-				var transform_input = Transform3D.IDENTITY
+					# empty transform object
+					var transform_input = Transform3D.IDENTITY
 
-				# get the coordinates of the slicer relative to the mesh instance we are about to cut.
-				transform_input.origin  = meshinstance.to_local( ( slicer.global_transform.origin ) )
-				transform_input.basis.x = meshinstance.to_local( ( slicer.global_transform.basis.x + body.global_position ) )
-				transform_input.basis.y = meshinstance.to_local( ( slicer.global_transform.basis.y + body.global_position ) )
-				transform_input.basis.z = meshinstance.to_local( ( slicer.global_transform.basis.z + body.global_position ) )
+					# get the coordinates of the slicer relative to the mesh instance we are about to cut.
+					transform_input.origin  = meshinstance.to_local( ( slicer.global_transform.origin ) )
+					transform_input.basis.x = meshinstance.to_local( ( slicer.global_transform.basis.x + body.global_position ) )
+					transform_input.basis.y = meshinstance.to_local( ( slicer.global_transform.basis.y + body.global_position ) )
+					transform_input.basis.z = meshinstance.to_local( ( slicer.global_transform.basis.z + body.global_position ) )
 
-				print( "global transform of slicer" )
-				print( ( slicer.global_transform.origin ) )
-				print( ( slicer.global_transform.basis.x + body.global_position ) )
-				print( ( slicer.global_transform.basis.y + body.global_position ) )
-				print( ( slicer.global_transform.basis.z + body.global_position ) )
+					print( "global transform of slicer" )
+					print( ( slicer.global_transform.origin ) )
+					print( ( slicer.global_transform.basis.x + body.global_position ) )
+					print( ( slicer.global_transform.basis.y + body.global_position ) )
+					print( ( slicer.global_transform.basis.z + body.global_position ) )
 
-				print( "transform input origin and basis" )
-				print( transform_input.origin )
-				print( transform_input.basis )
+					print( "transform input origin and basis" )
+					print( transform_input.origin )
+					print( transform_input.basis )
 
-				var collision = body.get_node( "CollisionShape3D" )
+					var collision = body.get_node( "CollisionShape3D" )
 
-				# Slice the mesh, return a list of meshes(seems to only return two right now)
-				var meshes = mesh_slicer.slice_mesh( transform_input, meshinstance.mesh, null )
+					# Slice the mesh, return a list of meshes(seems to only return two right now)
+					var meshes = mesh_slicer.slice_mesh( transform_input, meshinstance.mesh, null )
 
-				print( str( len( meshes ) ) + " meshes" )
+					print( str( len( meshes ) ) + " meshes" )
 
-				# Assigns the first mesh to the original object we sliced.
-				meshinstance.mesh = meshes[0]
+					# Assigns the first mesh to the original object we sliced.
+					meshinstance.mesh = meshes[0]
 
-				# create the collision shape for the original object based on first mesh
-				if len(meshes[0].get_faces()) > 2:
-					collision.shape = meshes[0].create_convex_shape()
+					# create the collision shape for the original object based on first mesh
+					if len(meshes[0].get_faces()) > 2:
+						collision.shape = meshes[0].create_convex_shape()
 
-				# adjust the center of mass on the original object
-				body.center_of_mass_mode = 1
-				body.center_of_mass = body.to_local(
-					meshinstance.to_global(
-						calculate_center_of_mass( meshes[0] )
+					# adjust the center of mass on the original object
+					body.center_of_mass_mode = 1
+					body.center_of_mass = body.to_local(
+						meshinstance.to_global(
+							calculate_center_of_mass( meshes[0] )
+						)
 					)
-				)
 
-				# Should in theory allow for creation of as many meshes as a slice needs.
-				for meshh in meshes.slice(1):
-					# second half of the mesh
-					var body2 = body.duplicate()
+					# Should in theory allow for creation of as many meshes as a slice needs.
+					for meshh in meshes.slice(1):
+						# second half of the mesh
+						var body2 = body.duplicate()
 
-					body2.freeze = false
+						body2.freeze = false
 
-					body_store.add_child(body2)
-					meshinstance = body2.get_node("MeshInstance3D")
-					collision    = body2.get_node("CollisionShape3D")
-					meshinstance.mesh = meshh
+						body_store.add_child(body2)
+						meshinstance = body2.get_node("MeshInstance3D")
+						collision    = body2.get_node("CollisionShape3D")
+						meshinstance.mesh = meshh
 
-					#generate collision
-					if len(meshh.get_faces()) > 2:
-						collision.shape = meshh.create_convex_shape()
+						#generate collision
+						if len(meshh.get_faces()) > 2:
+							collision.shape = meshh.create_convex_shape()
 
-					var leaves: Node3D = body.get_node("leaves")
-					if leaves != null:
-						leaves.queue_free()
+						var leaves: Node3D = body.get_node("leaves")
+						if leaves != null:
+							leaves.queue_free()
 
-					#get mesh size
-					var aabb = meshes[0].get_aabb()
-					var aabb2 = meshh.get_aabb()
-					#queue_free() if the mesh is too small
-					if aabb2.size.length() < 0.3:
-						body2.queue_free()
-					if aabb.size.length() < 0.3:
-						body.queue_free()
+						#get mesh size
+						var aabb = meshes[0].get_aabb()
+						var aabb2 = meshh.get_aabb()
+						#queue_free() if the mesh is too small
+						if aabb2.size.length() < 0.3:
+							body2.queue_free()
+						if aabb.size.length() < 0.3:
+							body.queue_free()
 
-					#adjust the rigidbody center of mass
-					body2.center_of_mass = body2.to_local(meshinstance.to_global(calculate_center_of_mass(meshh)))
+						#adjust the rigidbody center of mass
+						body2.center_of_mass = body2.to_local(meshinstance.to_global(calculate_center_of_mass(meshh)))
 
 func _update_camera(delta):
 	_mouse_rotation.x += _tilt_input * delta
@@ -233,3 +234,6 @@ func pause_game():
 			player_ui.hide()
 
 	paused = !paused
+
+func _enter_tree():
+	set_multiplayer_authority(name.to_int())

@@ -4,10 +4,10 @@ extends DirectionalLight3D
 @export var y: float
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
+func _process(_delta):
 
 	var day_speed = 200.0
-	
+
 	var ticks = Time.get_ticks_msec() * 0.1
 
 	var t = ( int( ticks ) ) / day_speed
