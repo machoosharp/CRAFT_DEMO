@@ -32,7 +32,8 @@ func _init():
 	RenderingServer.set_debug_generate_wireframes(true)
 
 func _ready():
-	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
+	if is_multiplayer_authority():
+		Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
 	camera.current = is_multiplayer_authority()
 	print('multiplayer player')
 
@@ -220,6 +221,9 @@ func _play_walk_sound():
 	grass_footstep.play()
 
 func pause_game():
+	if not is_multiplayer_authority():
+		return
+
 	if Input.mouse_mode != Input.MOUSE_MODE_VISIBLE:
 		Input.mouse_mode = Input.MOUSE_MODE_VISIBLE
 	elif Input.mouse_mode == Input.MOUSE_MODE_VISIBLE:
