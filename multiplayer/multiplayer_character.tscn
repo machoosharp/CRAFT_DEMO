@@ -1,17 +1,18 @@
-[gd_scene load_steps=11 format=3 uid="uid://c6664obkwgn0r"]
+[gd_scene load_steps=12 format=3 uid="uid://c6664obkwgn0r"]
 
 [ext_resource type="Script" path="res://multiplayer/scripts/character_controller.gd" id="1_jhqs2"]
 [ext_resource type="PackedScene" uid="uid://vuokdfgdnucn" path="res://common/pause_menu.tscn" id="2_jroqc"]
 [ext_resource type="AudioStream" uid="uid://boqdx7can14oq" path="res://audio/grasswalk.ogg" id="3_7vtvl"]
+[ext_resource type="PackedScene" uid="uid://c6l2txqlf73ce" path="res://common/axe.tscn" id="3_nonwd"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_61hv6"]
 
 [sub_resource type="CapsuleMesh" id="CapsuleMesh_5q0gg"]
 
-[sub_resource type="QuadMesh" id="QuadMesh_uv4ub"]
+[sub_resource type="QuadMesh" id="QuadMesh_4tt5a"]
 
-[sub_resource type="BoxShape3D" id="BoxShape3D_iqr4d"]
-size = Vector3(1, 1, 0.01)
+[sub_resource type="BoxShape3D" id="BoxShape3D_p551y"]
+size = Vector3(0.0119934, 0.133205, 0.001)
 
 [sub_resource type="Animation" id="Animation_6jela"]
 resource_name = "walking"
@@ -77,15 +78,20 @@ transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7, 0)
 visible = false
 
 [node name="Slicer" type="Node3D" parent="Camera3D"]
-transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -1, 0, -1.5)
+transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 1, 0, -1.5)
+
+[node name="Axe" parent="Camera3D/Slicer" instance=ExtResource("3_nonwd")]
+transform = Transform3D(-8.74228e-08, 0, -2, 0, 2, 0, 2, 0, -8.74228e-08, 0, 0, 0)
 
 [node name="MeshInstance3D" type="MeshInstance3D" parent="Camera3D/Slicer"]
-mesh = SubResource("QuadMesh_uv4ub")
+visible = false
+mesh = SubResource("QuadMesh_4tt5a")
 
 [node name="Area3D" type="Area3D" parent="Camera3D/Slicer"]
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Camera3D/Slicer/Area3D"]
-shape = SubResource("BoxShape3D_iqr4d")
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.264781, 0.0270138, 0.000354409)
+shape = SubResource("BoxShape3D_p551y")
 
 [node name="Audios" type="Node3D" parent="."]
 
