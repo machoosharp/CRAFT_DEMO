@@ -6,6 +6,7 @@ const JUMP_VELOCITY = 13
 
 @onready var pause_menu = $Camera3D/PauseMenu
 @onready var player_ui  = $"../PlayerUI/Crosshair"
+@onready var camera     = $Camera3D
 @onready var slicer     = $Camera3D/Slicer
 
 var mesh_slicer = MeshSlicer.new()
@@ -32,7 +33,6 @@ func _init():
 
 func _ready():
 	Input.mouse_mode = Input.MOUSE_MODE_CAPTURED
-	print('singleplayer player')
 
 func _process(_delta):
 	if Input.is_action_just_pressed('Pause'):
@@ -45,6 +45,7 @@ func _physics_process(delta):
 		velocity.y -= gravity * delta
 
 	_update_camera(delta)
+
 	# Handle jump.
 	if Input.mouse_mode == Input.MOUSE_MODE_CAPTURED:
 		if Input.is_action_just_pressed("up") and is_on_floor():
@@ -232,6 +233,3 @@ func pause_game():
 			player_ui.hide()
 
 	paused = !paused
-
-func _enter_tree():
-	set_multiplayer_authority(name.to_int())
