@@ -1,4 +1,4 @@
-[gd_scene load_steps=12 format=3 uid="uid://c2a1nwgr2fd8m"]
+[gd_scene load_steps=14 format=3 uid="uid://c2a1nwgr2fd8m"]
 
 [ext_resource type="Script" path="res://multiplayer/scripts/multiplayer.gd" id="1_2u77o"]
 [ext_resource type="PackedScene" uid="uid://3ow4gck0gxat" path="res://common/floor.tscn" id="3_owdd8"]
@@ -35,6 +35,20 @@ background_mode = 2
 sky = SubResource("Sky_wdsdv")
 tonemap_mode = 2
 glow_enabled = true
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_trrus"]
+noise_type = 2
+frequency = 0.0213
+offset = Vector3(-607.14, 0, 0)
+fractal_octaves = 1
+fractal_weighted_strength = 1.0
+
+[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_f5yqb"]
+width = 396
+height = 48
+as_normal_map = true
+bump_strength = 17.9
+noise = SubResource("FastNoiseLite_trrus")
 
 [node name="Multiplayer" type="Node3D"]
 script = ExtResource("1_2u77o")
@@ -110,10 +124,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = -132.0
-offset_top = -58.0
-offset_right = 132.0
-offset_bottom = 58.0
+offset_left = -202.0
+offset_top = -64.0
+offset_right = 202.0
+offset_bottom = 95.65
 grow_horizontal = 2
 grow_vertical = 2
 
@@ -150,5 +164,12 @@ text = "Join
 icon = ExtResource("7_uwwjh")
 icon_alignment = 1
 
+[node name="Exit" type="Button" parent="MultiplayerMenu/VBoxContainer"]
+layout_mode = 2
+text = "Exit"
+icon = SubResource("NoiseTexture2D_f5yqb")
+icon_alignment = 1
+
 [connection signal="pressed" from="MultiplayerMenu/VBoxContainer/HBoxContainer2/Host" to="." method="_on_host_pressed"]
 [connection signal="pressed" from="MultiplayerMenu/VBoxContainer/HBoxContainer2/Join" to="." method="_on_join_pressed"]
+[connection signal="pressed" from="MultiplayerMenu/VBoxContainer/Exit" to="." method="_on_exit_pressed"]

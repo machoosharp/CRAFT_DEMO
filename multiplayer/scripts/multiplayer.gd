@@ -59,10 +59,13 @@ func _on_join_pressed():
 	print('join world')
 	if not _handle_input():
 		return
-	peer.create_client( ip_input, int(port_input) )
+	peer.create_client( ip_input.text, int(port_input.text) )
 	print(peer.get_connection_status())
 	multiplayer.multiplayer_peer = peer
 	menu.hide()
+
+func _on_exit_pressed():
+	get_tree().change_scene_to_file("res://common/main_menu.tscn")
 
 func _add_player(id = 1):
 	var player = player_scene.instantiate()
