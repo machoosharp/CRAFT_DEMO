@@ -1,7 +1,6 @@
-[gd_scene load_steps=13 format=3 uid="uid://c2a1nwgr2fd8m"]
+[gd_scene load_steps=12 format=3 uid="uid://c2a1nwgr2fd8m"]
 
-[ext_resource type="Script" path="res://multiplayer/multiplayer.gd" id="1_2u77o"]
-[ext_resource type="PackedScene" uid="uid://c3w863swgslqe" path="res://common/character.tscn" id="2_8cmi4"]
+[ext_resource type="Script" path="res://multiplayer/scripts/multiplayer.gd" id="1_2u77o"]
 [ext_resource type="PackedScene" uid="uid://3ow4gck0gxat" path="res://common/floor.tscn" id="3_owdd8"]
 [ext_resource type="PackedScene" uid="uid://bdv1drd2fve82" path="res://common/log.tscn" id="4_hwvk7"]
 [ext_resource type="Script" path="res://chop_log/scripts/sun.gd" id="5_2mhsy"]
@@ -51,7 +50,6 @@ noise = SubResource("FastNoiseLite_trrus")
 
 [node name="Multiplayer" type="Node3D"]
 script = ExtResource("1_2u77o")
-player_scene = ExtResource("2_8cmi4")
 
 [node name="RigidBodiesStore" type="Node3D" parent="."]
 
@@ -112,8 +110,8 @@ spawn_path = NodePath("..")
 [node name="MultiplayerMenu" type="Control" parent="."]
 layout_mode = 3
 anchors_preset = 0
-offset_right = 40.0
-offset_bottom = 40.0
+offset_right = 1155.0
+offset_bottom = 648.0
 
 [node name="VBoxContainer" type="VBoxContainer" parent="MultiplayerMenu"]
 layout_mode = 1
@@ -122,10 +120,10 @@ anchor_left = 0.5
 anchor_top = 0.5
 anchor_right = 0.5
 anchor_bottom = 0.5
-offset_left = 424.0
-offset_top = 246.0
-offset_right = 688.0
-offset_bottom = 362.0
+offset_left = -132.0
+offset_top = -58.0
+offset_right = 132.0
+offset_bottom = 58.0
 grow_horizontal = 2
 grow_vertical = 2
 

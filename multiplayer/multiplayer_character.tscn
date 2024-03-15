@@ -1,8 +1,8 @@
-[gd_scene load_steps=10 format=3 uid="uid://c3w863swgslqe"]
+[gd_scene load_steps=11 format=3 uid="uid://c6664obkwgn0r"]
 
-[ext_resource type="Script" path="res://common/scripts/character_controller.gd" id="1_tnlc5"]
-[ext_resource type="PackedScene" uid="uid://vuokdfgdnucn" path="res://common/pause_menu.tscn" id="2_q2khm"]
-[ext_resource type="AudioStream" uid="uid://boqdx7can14oq" path="res://audio/grasswalk.ogg" id="3_0mvly"]
+[ext_resource type="Script" path="res://multiplayer/scripts/character_controller.gd" id="1_jhqs2"]
+[ext_resource type="PackedScene" uid="uid://vuokdfgdnucn" path="res://common/pause_menu.tscn" id="2_jroqc"]
+[ext_resource type="AudioStream" uid="uid://boqdx7can14oq" path="res://audio/grasswalk.ogg" id="3_7vtvl"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_61hv6"]
 
@@ -43,11 +43,25 @@ _data = {
 "walking": SubResource("Animation_6jela")
 }
 
+[sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_trrw5"]
+properties/0/path = NodePath(".:position")
+properties/0/spawn = true
+properties/0/replication_mode = 1
+properties/1/path = NodePath(".:rotation")
+properties/1/spawn = true
+properties/1/replication_mode = 1
+properties/2/path = NodePath("Camera3D/Slicer:rotation")
+properties/2/spawn = true
+properties/2/replication_mode = 1
+properties/3/path = NodePath("Camera3D/Slicer:position")
+properties/3/spawn = true
+properties/3/replication_mode = 1
+
 [node name="CHARACTER" type="CharacterBody3D"]
 floor_stop_on_slope = false
 floor_block_on_wall = false
 floor_max_angle = 0.349066
-script = ExtResource("1_tnlc5")
+script = ExtResource("1_jhqs2")
 
 [node name="CollisionShape3D" type="CollisionShape3D" parent="."]
 transform = Transform3D(0.96, 0, 0, 0, 0.96, 0, 0, 0, 0.96, 0, 0, 0)
@@ -59,13 +73,8 @@ mesh = SubResource("CapsuleMesh_5q0gg")
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7, 0)
 
-[node name="PauseMenu" parent="Camera3D" instance=ExtResource("2_q2khm")]
+[node name="PauseMenu" parent="Camera3D" instance=ExtResource("2_jroqc")]
 visible = false
-anchors_preset = 8
-anchor_left = 0.5
-anchor_top = 0.5
-anchor_right = 0.5
-anchor_bottom = 0.5
 
 [node name="Slicer" type="Node3D" parent="Camera3D"]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, -1, 0, -1.5)
@@ -81,7 +90,7 @@ shape = SubResource("BoxShape3D_iqr4d")
 [node name="Audios" type="Node3D" parent="."]
 
 [node name="GrassFootstep" type="AudioStreamPlayer" parent="Audios"]
-stream = ExtResource("3_0mvly")
+stream = ExtResource("3_7vtvl")
 volume_db = -8.0
 pitch_scale = 1.25
 
@@ -91,3 +100,6 @@ pitch_scale = 1.25
 libraries = {
 "": SubResource("AnimationLibrary_4pxt5")
 }
+
+[node name="MultiplayerSynchronizer" type="MultiplayerSynchronizer" parent="."]
+replication_config = SubResource("SceneReplicationConfig_trrw5")
