@@ -3,7 +3,8 @@ extends Node3D
 
 var peer = ENetMultiplayerPeer.new()
 @onready var player_scene = load("res://multiplayer/multiplayer_character.tscn")
-
+@onready var ip_input = $MultiplayerMenu/VBoxContainer/HBoxContainer/IPInput
+@onready var port_input = $MultiplayerMenu/VBoxContainer/HBoxContainer/PortInput
 @onready var menu = $MultiplayerMenu
 @onready var player_ui = $PlayerUI
 
@@ -13,7 +14,10 @@ func _ready():
 func _on_host_pressed():
 	print('multiplayer.gd')
 	print('host world')
-	peer.create_server(139)
+	if not _handle_input():
+		return
+	peer.set_bind_ip(ip_input.text)
+	peer.create_server(int(port_input.text))
 	multiplayer.multiplayer_peer = peer
 	multiplayer.peer_connected.connect(_add_player)
 	_add_player()
@@ -22,7 +26,10 @@ func _on_host_pressed():
 
 func _on_join_pressed():
 	print('join world')
-	peer.create_client( "25.6.37.145", 139 )
+	if not _handle_input():
+		return
+	peer.create_client( ip_input, int(port_input) )
+	print(peer.get_connection_status())
 	multiplayer.multiplayer_peer = peer
 	menu.hide()
 	player_ui.show()
@@ -34,3 +41,16 @@ func _add_player(id = 1):
 
 func del_player(id):
 	rpc('_del_player',id)
+
+func _handle_input():
+	print(ip_input.text)
+	if not ip_input.text:
+		print('Invalid IP!')
+		return false
+
+	print(int(port_input.text))
+	if not port_input.text:
+		print('Invalid Port!')
+		return false
+
+	return true

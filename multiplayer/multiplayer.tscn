@@ -5,6 +5,8 @@
 [ext_resource type="PackedScene" uid="uid://bdv1drd2fve82" path="res://common/log.tscn" id="4_hwvk7"]
 [ext_resource type="Script" path="res://chop_log/scripts/sun.gd" id="5_2mhsy"]
 [ext_resource type="PackedScene" uid="uid://bv03p677nvsmc" path="res://common/player_ui.tscn" id="6_fxef7"]
+[ext_resource type="Texture2D" uid="uid://cd4bypggg67bi" path="res://textures/Icons/host_icon.tres" id="6_t5fhp"]
+[ext_resource type="Texture2D" uid="uid://cflt0d1lqrby2" path="res://textures/Icons/join_icon.tres" id="7_uwwjh"]
 
 [sub_resource type="SceneReplicationConfig" id="SceneReplicationConfig_deikl"]
 properties/0/path = NodePath("LOG:position")
@@ -33,20 +35,6 @@ background_mode = 2
 sky = SubResource("Sky_wdsdv")
 tonemap_mode = 2
 glow_enabled = true
-
-[sub_resource type="FastNoiseLite" id="FastNoiseLite_trrus"]
-noise_type = 2
-frequency = 0.0213
-offset = Vector3(-607.14, 0, 0)
-fractal_octaves = 1
-fractal_weighted_strength = 1.0
-
-[sub_resource type="NoiseTexture2D" id="NoiseTexture2D_f2rrh"]
-width = 256
-height = 48
-as_normal_map = true
-bump_strength = 17.9
-noise = SubResource("FastNoiseLite_trrus")
 
 [node name="Multiplayer" type="Node3D"]
 script = ExtResource("1_2u77o")
@@ -129,18 +117,38 @@ offset_bottom = 58.0
 grow_horizontal = 2
 grow_vertical = 2
 
-[node name="Host" type="Button" parent="MultiplayerMenu/VBoxContainer"]
+[node name="HBoxContainer" type="HBoxContainer" parent="MultiplayerMenu/VBoxContainer"]
+layout_mode = 2
+size_flags_vertical = 3
+
+[node name="IPInput" type="TextEdit" parent="MultiplayerMenu/VBoxContainer/HBoxContainer"]
+custom_minimum_size = Vector2(256, 0)
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+placeholder_text = "IP"
+
+[node name="PortInput" type="TextEdit" parent="MultiplayerMenu/VBoxContainer/HBoxContainer"]
+layout_mode = 2
+size_flags_horizontal = 3
+size_flags_vertical = 3
+placeholder_text = "Port"
+
+[node name="HBoxContainer2" type="HBoxContainer" parent="MultiplayerMenu/VBoxContainer"]
+layout_mode = 2
+
+[node name="Host" type="Button" parent="MultiplayerMenu/VBoxContainer/HBoxContainer2"]
 layout_mode = 2
 text = "Host"
-icon = SubResource("NoiseTexture2D_f2rrh")
+icon = ExtResource("6_t5fhp")
 icon_alignment = 1
 
-[node name="Join" type="Button" parent="MultiplayerMenu/VBoxContainer"]
+[node name="Join" type="Button" parent="MultiplayerMenu/VBoxContainer/HBoxContainer2"]
 layout_mode = 2
 text = "Join
 "
-icon = SubResource("NoiseTexture2D_f2rrh")
+icon = ExtResource("7_uwwjh")
 icon_alignment = 1
 
-[connection signal="pressed" from="MultiplayerMenu/VBoxContainer/Host" to="." method="_on_host_pressed"]
-[connection signal="pressed" from="MultiplayerMenu/VBoxContainer/Join" to="." method="_on_join_pressed"]
+[connection signal="pressed" from="MultiplayerMenu/VBoxContainer/HBoxContainer2/Host" to="." method="_on_host_pressed"]
+[connection signal="pressed" from="MultiplayerMenu/VBoxContainer/HBoxContainer2/Join" to="." method="_on_join_pressed"]
