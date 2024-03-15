@@ -1,0 +1,15 @@
+[gd_resource type="NoiseTexture2D" load_steps=2 format=3 uid="uid://y6j0kwuwardx"]
+
+[sub_resource type="FastNoiseLite" id="FastNoiseLite_trrus"]
+noise_type = 2
+frequency = 0.0213
+offset = Vector3(-607.14, 0, 0)
+fractal_octaves = 1
+fractal_weighted_strength = 1.0
+
+[resource]
+width = 128
+height = 48
+as_normal_map = true
+bump_strength = 17.9
+noise = SubResource("FastNoiseLite_trrus")
