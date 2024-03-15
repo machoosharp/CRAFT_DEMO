@@ -104,7 +104,7 @@ transform = Transform3D(1, 0, 0, 0, 0.870605, 0.491983, 0, -0.491983, 0.870605, 
 [node name="PlayerUI" parent="." instance=ExtResource("6_fxef7")]
 
 [node name="MultiplayerSpawner" type="MultiplayerSpawner" parent="."]
-_spawnable_scenes = PackedStringArray("res://common/character.tscn")
+_spawnable_scenes = PackedStringArray("res://multiplayer/multiplayer_character.tscn")
 spawn_path = NodePath("..")
 
 [node name="MultiplayerMenu" type="Control" parent="."]

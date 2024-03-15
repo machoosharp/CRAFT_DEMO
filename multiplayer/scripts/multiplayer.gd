@@ -2,7 +2,7 @@ extends Node3D
 
 
 var peer = ENetMultiplayerPeer.new()
-@onready var player_scene = preload("res://multiplayer/multiplayer_character.tscn")
+@onready var player_scene = load("res://multiplayer/multiplayer_character.tscn")
 
 @onready var menu = $MultiplayerMenu
 @onready var player_ui = $PlayerUI
