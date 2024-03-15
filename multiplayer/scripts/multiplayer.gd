@@ -51,6 +51,7 @@ func _on_host_pressed():
 	peer.create_server(int(port_input.text))
 	multiplayer.multiplayer_peer = peer
 	multiplayer.peer_connected.connect(_add_player)
+	multiplayer.peer_disconnected.connect(_del_player)
 	_add_player()
 	menu.hide()
 	player_ui.show()
@@ -72,8 +73,11 @@ func _add_player(id = 1):
 	player.name = str(id)
 	call_deferred("add_child", player)
 
-func del_player(id):
-	rpc('_del_player',id)
+func _del_player( id ):
+	var player = get_node_or_null(str(id))
+	if player:
+		player.queue_free()
+	#rpc('_del_player',id)
 
 func _handle_input():
 	print(ip_input.text)
