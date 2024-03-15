@@ -91,6 +91,12 @@ func _physics_process(delta):
 			for body in $Camera3D/Slicer/Area3D.get_overlapping_bodies().duplicate():
 				if body is RigidBody3D:
 
+					# Play slice sound
+					var sound = body.get_node("AudioStreamPlayer3D")
+					if sound:
+						sound.pitch_scale = randf_range( .9, 1.08 )
+						sound.play()
+
 					# Mesh instance of the body the slicer is going to slice
 					var meshinstance: MeshInstance3D = body.get_node( "MeshInstance3D" )
 
