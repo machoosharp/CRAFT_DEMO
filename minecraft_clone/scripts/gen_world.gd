@@ -10,11 +10,11 @@ var n2 = FastNoiseLite.new()
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	
+
 	var grass_block: Node3D = grass_block_scn.instantiate()
 	var sand_block: Node3D = sand_block_scn.instantiate()
 	var dirt_block: Node3D = dirt_block_scn.instantiate()
-	
+
 	n.set_seed(randi())
 	n2.set_seed(randi())
 	for x in range(30):

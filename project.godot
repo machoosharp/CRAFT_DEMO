@@ -16,10 +16,6 @@ config/features=PackedStringArray("4.2", "Forward Plus")
 boot_splash/bg_color=Color(0.0156863, 0.247059, 0.207843, 1)
 config/icon="res://textures/grass-9843-in-architextures.png"
 
-[debug]
-
-settings/stdout/print_fps=true
-
 [display]
 
 window/size/mode=2
