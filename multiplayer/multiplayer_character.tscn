@@ -1,9 +1,10 @@
-[gd_scene load_steps=12 format=3 uid="uid://c6664obkwgn0r"]
+[gd_scene load_steps=13 format=3 uid="uid://c6664obkwgn0r"]
 
 [ext_resource type="Script" path="res://multiplayer/scripts/character_controller.gd" id="1_jhqs2"]
 [ext_resource type="PackedScene" uid="uid://vuokdfgdnucn" path="res://common/pause_menu.tscn" id="2_jroqc"]
 [ext_resource type="AudioStream" uid="uid://boqdx7can14oq" path="res://audio/grasswalk.ogg" id="3_7vtvl"]
 [ext_resource type="PackedScene" uid="uid://c6l2txqlf73ce" path="res://common/axe.tscn" id="3_nonwd"]
+[ext_resource type="Script" path="res://multiplayer/Slicer.gd" id="3_o5hcm"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_61hv6"]
 
@@ -79,6 +80,7 @@ visible = false
 
 [node name="Slicer" type="Node3D" parent="Camera3D"]
 transform = Transform3D(-4.37114e-08, 0, 1, 0, 1, 0, -1, 0, -4.37114e-08, 1, 0, -1.5)
+script = ExtResource("3_o5hcm")
 
 [node name="Axe" parent="Camera3D/Slicer" instance=ExtResource("3_nonwd")]
 transform = Transform3D(-8.74228e-08, 0, -2, 0, 2, 0, 2, 0, -8.74228e-08, 0, 0, 0)
