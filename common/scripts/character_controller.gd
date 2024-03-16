@@ -39,7 +39,10 @@ func _process(_delta):
 		pause_game()
 
 func _physics_process(delta):
-
+	# Pick up
+	if Input.is_action_just_pressed("right_mouse"):
+		$Camera3D/GrabComponent.pickup()
+		
 	# Add the gravity.
 	if not is_on_floor():
 		velocity.y -= gravity * delta

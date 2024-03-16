@@ -1,9 +1,10 @@
-[gd_scene load_steps=11 format=3 uid="uid://c3w863swgslqe"]
+[gd_scene load_steps=12 format=3 uid="uid://c3w863swgslqe"]
 
 [ext_resource type="Script" path="res://common/scripts/character_controller.gd" id="1_tnlc5"]
 [ext_resource type="PackedScene" uid="uid://vuokdfgdnucn" path="res://common/pause_menu.tscn" id="2_q2khm"]
 [ext_resource type="AudioStream" uid="uid://boqdx7can14oq" path="res://audio/grasswalk.ogg" id="3_0mvly"]
 [ext_resource type="PackedScene" uid="uid://c6l2txqlf73ce" path="res://common/axe.tscn" id="3_md8f2"]
+[ext_resource type="Script" path="res://common/scripts/GrabComponent.gd" id="4_pq1qa"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_61hv6"]
 
@@ -83,6 +84,14 @@ mesh = SubResource("QuadMesh_uv4ub")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Camera3D/Slicer/Area3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.264781, 0.0270138, 0.000354409)
 shape = SubResource("BoxShape3D_iqr4d")
+
+[node name="GrabComponent" type="Node3D" parent="Camera3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.485)
+script = ExtResource("4_pq1qa")
+
+[node name="RayCast3D" type="RayCast3D" parent="Camera3D/GrabComponent"]
+target_position = Vector3(0, 0, -2)
+hit_from_inside = true
 
 [node name="Audios" type="Node3D" parent="."]
 
