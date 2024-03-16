@@ -16,7 +16,6 @@ func pickup():
 	object_previous_parent = current_object.get_parent()
 	current_object.reparent(self)
 	current_object.freeze = true
-	current_object.position = position
 
 func drop():
 	current_object.reparent(object_previous_parent)
