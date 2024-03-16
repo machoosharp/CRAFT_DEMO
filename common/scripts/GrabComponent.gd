@@ -8,7 +8,8 @@ func pickup():
 	# if already holding an object, drop it
 	if current_object:
 		return drop()
-	if not ray_cast.get_collider() is RigidBody3D:
+	var selected_object = ray_cast.get_collider()
+	if not selected_object is RigidBody3D or selected_object.is_freeze_enabled():
 		return
 	# Collect reference for held object
 	current_object = ray_cast.get_collider()
