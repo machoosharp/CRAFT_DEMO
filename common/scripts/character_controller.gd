@@ -2,6 +2,7 @@ extends CharacterBody3D
 
 
 const SPEED = 8.0
+const RAMPUP = 1.0
 const JUMP_VELOCITY = 13
 
 @onready var pause_menu = $Camera3D/PauseMenu
@@ -64,19 +65,19 @@ func _physics_process(delta):
 		var direction = (transform.basis * Vector3(input_dir.x, 0, input_dir.y)).normalized()
 
 		if direction:
-			velocity.x = direction.x * SPEED
-			velocity.z = direction.z * SPEED
+			velocity.x = move_toward(velocity.x, (direction.x * SPEED), RAMPUP)
+			velocity.z = move_toward(velocity.z, (direction.z * SPEED), RAMPUP)
 
 			# Footstep Logic
 			if is_on_floor():
 				walk_animation.play( 'walking' )
 
 		else:
-			velocity.x = move_toward(velocity.x, 0, SPEED)
-			velocity.z = move_toward(velocity.z, 0, SPEED)
+			velocity.x = move_toward(velocity.x, 0, RAMPUP)
+			velocity.z = move_toward(velocity.z, 0, RAMPUP)
 	else:
-		velocity.x = move_toward(velocity.x, 0, SPEED)
-		velocity.z = move_toward(velocity.z, 0, SPEED)
+		velocity.x = move_toward(velocity.x, 0, RAMPUP)
+		velocity.z = move_toward(velocity.z, 0, RAMPUP)
 
 	if position.y < -100:
 		position = Vector3(0, 1, 0)
@@ -177,13 +178,13 @@ func _physics_process(delta):
 					#adjust the rigidbody center of mass
 					body2.center_of_mass = body2.to_local(meshinstance.to_global(calculate_center_of_mass(meshh)))
 
-func _update_camera(delta):
+func _update_camera( delta ):
 	_mouse_rotation.x += _tilt_input * delta
 	_mouse_rotation.y += _rotation_input * delta
 	_mouse_rotation.x = clamp(_mouse_rotation.x, deg_to_rad(-85), deg_to_rad(85))
 
-	_player_rotation = Vector3(0.0, _mouse_rotation.y, 0.0)
-	_camera_rotation = Vector3(_mouse_rotation.x, 0.0, 0.0)
+	_player_rotation = Vector3( 0.0, _mouse_rotation.y, 0.0)
+	_camera_rotation = Vector3( _mouse_rotation.x, 0.0, 0.0)
 
 	$Camera3D.transform.basis = Basis.from_euler(_camera_rotation)
 	$Camera3D.rotation.z = 0.0
