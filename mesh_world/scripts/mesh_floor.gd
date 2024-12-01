@@ -21,12 +21,12 @@ var n4 = FastNoiseLite.new()
 func _ready():
 
 	var surface_tool := SurfaceTool.new()
-	
+
 	n1.set_seed(randi())
 	n2.set_seed(randi())
 	n3.set_seed(randi())
 	n4.set_seed(randi())
-	
+
 	a_mesh = ArrayMesh.new()
 
 	var lenx = 300
@@ -96,7 +96,7 @@ func _ready():
 
 	var array = []
 	array.resize(Mesh.ARRAY_MAX)
-	array[Mesh.ARRAY_VERTEX] = vertices 
+	array[Mesh.ARRAY_VERTEX] = vertices
 	array[Mesh.ARRAY_INDEX]  = indices
 	array[Mesh.ARRAY_TEX_UV] = uvs
 	array[Mesh.ARRAY_NORMAL] = normals
@@ -110,13 +110,12 @@ func _ready():
 		surface_tool.create_from( a_mesh, i )
 
 	var hmap = HeightMapShape3D.new()
-	
+
 	hmap.map_width = lenx
 	hmap.map_depth = leny
-	
+
 	hmap.map_data  = hs
 
 	coll_shape.shape = hmap
-	
-	coll_shape.position = Vector3((float(lenx)/2)-0.5, 0, (float(leny)/2)-0.5)
 
+	coll_shape.position = Vector3((float(lenx)/2)-0.5, 0, (float(leny)/2)-0.5)

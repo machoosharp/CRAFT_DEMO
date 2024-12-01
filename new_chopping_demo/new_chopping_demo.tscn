@@ -1,0 +1,25 @@
+[gd_scene load_steps=5 format=3 uid="uid://bf83brqp0trjs"]
+
+[ext_resource type="Texture2D" uid="uid://bq0221sccs21l" path="res://textures/grass-9843-in-architextures.png" id="1_j861u"]
+
+[sub_resource type="BoxShape3D" id="BoxShape3D_phsij"]
+size = Vector3(30, 0.1, 30)
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_lxjcm"]
+albedo_texture = ExtResource("1_j861u")
+uv1_scale = Vector3(30, 30, 30)
+
+[sub_resource type="BoxMesh" id="BoxMesh_alhme"]
+size = Vector3(30, 0.1, 30)
+
+[node name="NewChoppingDemo" type="Node3D"]
+
+[node name="Floor" type="StaticBody3D" parent="."]
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="Floor"]
+shape = SubResource("BoxShape3D_phsij")
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="Floor"]
+material_override = SubResource("StandardMaterial3D_lxjcm")
+mesh = SubResource("BoxMesh_alhme")
+skeleton = NodePath("../..")
