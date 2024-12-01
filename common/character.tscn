@@ -1,9 +1,11 @@
-[gd_scene load_steps=11 format=3 uid="uid://c3w863swgslqe"]
+[gd_scene load_steps=13 format=3 uid="uid://c3w863swgslqe"]
 
 [ext_resource type="Script" path="res://common/scripts/character_controller.gd" id="1_tnlc5"]
 [ext_resource type="PackedScene" uid="uid://vuokdfgdnucn" path="res://common/pause_menu.tscn" id="2_q2khm"]
 [ext_resource type="AudioStream" uid="uid://boqdx7can14oq" path="res://audio/grasswalk.ogg" id="3_0mvly"]
+[ext_resource type="Script" path="res://common/debug_screen.gd" id="3_enis5"]
 [ext_resource type="PackedScene" uid="uid://c6l2txqlf73ce" path="res://common/axe.tscn" id="3_md8f2"]
+[ext_resource type="Script" path="res://common/scripts/GrabComponent.gd" id="4_pq1qa"]
 
 [sub_resource type="CapsuleShape3D" id="CapsuleShape3D_61hv6"]
 
@@ -60,6 +62,37 @@ mesh = SubResource("CapsuleMesh_5q0gg")
 [node name="Camera3D" type="Camera3D" parent="."]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0.7, 0)
 
+[node name="DebugVal" type="Control" parent="Camera3D"]
+layout_mode = 3
+anchors_preset = 15
+anchor_right = 1.0
+anchor_bottom = 1.0
+grow_horizontal = 2
+grow_vertical = 2
+script = ExtResource("3_enis5")
+
+[node name="VBoxContainer" type="VBoxContainer" parent="Camera3D/DebugVal"]
+layout_mode = 1
+anchors_preset = 9
+anchor_bottom = 1.0
+offset_right = 576.0
+grow_vertical = 2
+
+[node name="Transform" type="Label" parent="Camera3D/DebugVal/VBoxContainer"]
+layout_mode = 2
+
+[node name="x" type="Label" parent="Camera3D/DebugVal/VBoxContainer"]
+layout_mode = 2
+
+[node name="y" type="Label" parent="Camera3D/DebugVal/VBoxContainer"]
+layout_mode = 2
+
+[node name="z" type="Label" parent="Camera3D/DebugVal/VBoxContainer"]
+layout_mode = 2
+
+[node name="direction" type="Label" parent="Camera3D/DebugVal/VBoxContainer"]
+layout_mode = 2
+
 [node name="PauseMenu" parent="Camera3D" instance=ExtResource("2_q2khm")]
 visible = false
 anchors_preset = 8
@@ -83,6 +116,14 @@ mesh = SubResource("QuadMesh_uv4ub")
 [node name="CollisionShape3D" type="CollisionShape3D" parent="Camera3D/Slicer/Area3D"]
 transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.264781, 0.0270138, 0.000354409)
 shape = SubResource("BoxShape3D_iqr4d")
+
+[node name="GrabComponent" type="Node3D" parent="Camera3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0, 0, -1.485)
+script = ExtResource("4_pq1qa")
+
+[node name="RayCast3D" type="RayCast3D" parent="Camera3D/GrabComponent"]
+target_position = Vector3(0, 0, -2)
+hit_from_inside = true
 
 [node name="Audios" type="Node3D" parent="."]
 
