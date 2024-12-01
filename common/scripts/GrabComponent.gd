@@ -1,24 +1,61 @@
 extends Node3D
 
+
+@export var THROW_FORCE: float = 10
 @onready var ray_cast: RayCast3D = $RayCast3D
-var current_object: RigidBody3D
+
+var held_object: RigidBody3D
 var object_previous_parent: Node3D
+var held_rotation: Vector3
+var cam_rotation: Vector3
+
+@onready var cam = get_parent_node_3d()
+
+func _physics_process( delta ):
+
+	if not held_object:
+		return
+
+	held_object.global_position = (
+		cam.global_position.direction_to(
+			held_object.global_position 
+		) + ray_cast.global_position
+	)
+	
+	var cam_rotation_offset = cam.global_rotation - cam_rotation
+	var held_rotation_offset = held_object.global_rotation - held_rotation
+
+	held_object.global_rotation = held_rotation
+	held_object.global_rotation.y = held_rotation.y + cam_rotation_offset.y
+
+	held_object.linear_velocity = Vector3(0,0,0)
+	held_object.angular_velocity = Vector3(0,0,0)
 
 func pickup():
-	# if already holding an object, drop it
-	if current_object:
-		return drop()
-	var selected_object = ray_cast.get_collider()
-	if not selected_object is RigidBody3D or selected_object.is_freeze_enabled():
-		return
+
 	# Collect reference for held object
-	current_object = ray_cast.get_collider()
-	object_previous_parent = current_object.get_parent()
-	current_object.reparent(self)
-	current_object.freeze = true
+	var test_obj = ray_cast.get_collider()
+	if not test_obj is RigidBody3D or test_obj.is_freeze_enabled():
+		return
+
+	held_object = test_obj
+
+	held_rotation = held_object.global_rotation
+	cam_rotation  = cam.global_rotation
+
+func throw():
+	if not held_object:
+		return
+
+	held_object.apply_central_impulse(
+		cam.global_position.direction_to(ray_cast.global_position).normalized() * THROW_FORCE
+	)
+	
+	held_object = null
 
 func drop():
-	current_object.reparent(object_previous_parent)
-	current_object.freeze = false
-	
-	current_object = null
+
+	if not held_object:
+		return
+
+	held_object = null

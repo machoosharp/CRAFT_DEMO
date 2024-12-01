@@ -42,6 +42,10 @@ func _physics_process(delta):
 	# Pick up
 	if Input.is_action_just_pressed("right_mouse"):
 		$Camera3D/GrabComponent.pickup()
+	if Input.is_action_just_released("right_mouse"):
+		$Camera3D/GrabComponent.drop()
+	if Input.is_action_just_pressed("left_mouse"):
+		$Camera3D/GrabComponent.throw()
 		
 	# Add the gravity.
 	if not is_on_floor():
