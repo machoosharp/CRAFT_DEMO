@@ -5,7 +5,7 @@ extends DirectionalLight3D
 @onready var sky: WorldEnvironment = $"../WorldEnvironment"
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
+func _process(_delta):
 
 	var day_speed = 30.0
 

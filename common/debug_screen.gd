@@ -1,7 +1,7 @@
 extends Control
 
 
-@onready var cam: Camera3D     = $"../Camera3D"
+@onready var cam: Camera3D
 @onready var ltransform: Label = $"VBoxContainer/Transform"
 @onready var lx: Label         = $"VBoxContainer/x"
 @onready var ly: Label         = $"VBoxContainer/y"
@@ -18,12 +18,10 @@ var trans: Transform3D = Transform3D()
 
 # Called when the node enters the scene tree for the first time.
 func _ready():
-	pass # Replace with function body.
-
+	cam = get_parent()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta):
-	cam = get_parent()
+func _process(_delta):
 	if not cam:
 		return
 

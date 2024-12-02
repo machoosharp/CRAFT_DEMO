@@ -8,34 +8,24 @@ var character: CharacterBody3D
 
 var mesh_slicer = MeshSlicer.new()
 
-var locked = false
-var paused = false
-var _rotation_input: float
-var _tilt_input: float
-var _mouse_rotation: Vector3
-var _player_rotation: Vector3
-var _camera_rotation: Vector3
-
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	character = get_parent_node_3d().get_parent_node_3d()
 
 # Called every frame. 'delta' is the elapsed time since the previous frame.
-func _process(delta: float) -> void:
-	if Input.is_action_just_pressed( "left_mouse" ):
-		for body in area3d.get_overlapping_bodies().duplicate():
-			if not body is RigidBody3D:
-				continue
-			slice_body( body )
-
-func _unhandled_input(event):
+func _process(_delta: float) -> void:
 
 	#rotate slicer plane
 	if Input.is_action_pressed("scroll_up"):
 		rotate_z(0.1)
 	if Input.is_action_pressed("scroll_down"):
 		rotate_z(-0.1)
+	if Input.is_action_just_pressed( "left_mouse" ):
+		for body in area3d.get_overlapping_bodies().duplicate():
+			if not body is RigidBody3D:
+				continue
+			slice_body( body )
 
 func slice_body( body: RigidBody3D ):
 	# Play slice sound
@@ -81,7 +71,7 @@ func slice_body( body: RigidBody3D ):
 		collision.shape = meshes[0].create_convex_shape()
 
 	# adjust the center of mass on the original object
-	body.center_of_mass_mode = 1
+	body.center_of_mass_mode = body.CENTER_OF_MASS_MODE_CUSTOM
 	body.center_of_mass = body.to_local(
 		meshinstance.to_global(
 			calculate_center_of_mass( meshes[0] )
@@ -104,7 +94,7 @@ func slice_body( body: RigidBody3D ):
 		if len(meshh.get_faces()) > 2:
 			collision.shape = meshh.create_convex_shape()
 
-		var leaves: Node3D = body.get_node("leaves")
+		var leaves: Node3D = body.get_node_or_null("leaves")
 		if leaves != null:
 			leaves.queue_free()
 
@@ -120,7 +110,7 @@ func slice_body( body: RigidBody3D ):
 		#adjust the rigidbody center of mass
 		body2.center_of_mass = body2.to_local(meshinstance.to_global(calculate_center_of_mass(meshh)))
 
-func calculate_center_of_mass(mesh:ArrayMesh):
+func calculate_center_of_mass( mesh: ArrayMesh ):
 	#Not sure how well this work
 	var meshVolume = 0
 	var temp = Vector3(0,0,0)

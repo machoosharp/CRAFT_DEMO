@@ -11,7 +11,7 @@ var cam_rotation: Vector3
 
 @onready var cam = get_parent_node_3d()
 
-func _physics_process( delta ):
+func _physics_process( _delta ):
 	if Input.is_action_just_pressed("right_mouse"):
 		pickup()
 	if Input.is_action_just_released("right_mouse"):
@@ -29,7 +29,6 @@ func _physics_process( delta ):
 	)
 	
 	var cam_rotation_offset = cam.global_rotation - cam_rotation
-	var held_rotation_offset = held_object.global_rotation - held_rotation
 
 	held_object.global_rotation = held_rotation
 	held_object.global_rotation.y = held_rotation.y + cam_rotation_offset.y

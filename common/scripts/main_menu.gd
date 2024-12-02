@@ -1,7 +1,5 @@
 extends Control
 
-@onready var character = $"../.."
-
 func _on_chop_log_pressed():
 	print('log chop')
 	get_tree().change_scene_to_file("res://chop_log/main.tscn")
