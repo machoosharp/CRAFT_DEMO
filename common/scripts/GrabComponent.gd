@@ -12,6 +12,12 @@ var cam_rotation: Vector3
 @onready var cam = get_parent_node_3d()
 
 func _physics_process( delta ):
+	if Input.is_action_just_pressed("right_mouse"):
+		pickup()
+	if Input.is_action_just_released("right_mouse"):
+		drop()
+	if Input.is_action_just_pressed("left_mouse"):
+		throw()
 
 	if not held_object:
 		return
