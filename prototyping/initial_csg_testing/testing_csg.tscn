@@ -1,0 +1,79 @@
+[gd_scene load_steps=10 format=3 uid="uid://c75s3l0f6fqbh"]
+
+[ext_resource type="Script" path="res://prototyping/initial_csg_testing/csg_polygon_3d.gd" id="2_bnn82"]
+[ext_resource type="Script" path="res://prototyping/initial_csg_testing/character_body_3d.gd" id="3_lwikj"]
+
+[sub_resource type="ProceduralSkyMaterial" id="ProceduralSkyMaterial_yi1cy"]
+sky_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+ground_horizon_color = Color(0.64625, 0.65575, 0.67075, 1)
+
+[sub_resource type="Sky" id="Sky_8q74l"]
+sky_material = SubResource("ProceduralSkyMaterial_yi1cy")
+
+[sub_resource type="Environment" id="Environment_sou84"]
+background_mode = 2
+sky = SubResource("Sky_8q74l")
+tonemap_mode = 2
+glow_enabled = true
+
+[sub_resource type="BoxMesh" id="BoxMesh_61sdu"]
+resource_local_to_scene = true
+size = Vector3(0.335, 0.97, 1)
+
+[sub_resource type="CapsuleShape3D" id="CapsuleShape3D_j058m"]
+radius = 0.17
+height = 0.625
+
+[sub_resource type="StandardMaterial3D" id="StandardMaterial3D_5aruc"]
+transparency = 1
+albedo_color = Color(0.99554, 0.569707, 0.259691, 0.317647)
+
+[sub_resource type="SphereMesh" id="SphereMesh_kadvf"]
+material = SubResource("StandardMaterial3D_5aruc")
+radius = 0.075
+height = 0.15
+
+[node name="testingCSG" type="Node3D"]
+
+[node name="WorldEnvironment" type="WorldEnvironment" parent="."]
+environment = SubResource("Environment_sou84")
+
+[node name="DirectionalLight3D" type="DirectionalLight3D" parent="."]
+transform = Transform3D(-0.866023, -0.433016, 0.250001, 0, 0.499998, 0.866027, -0.500003, 0.749999, -0.43301, 0, 0, 0)
+shadow_enabled = true
+
+[node name="CSGMesh" type="CSGMesh3D" parent="."]
+snap = 1e-06
+calculate_tangents = false
+mesh = SubResource("BoxMesh_61sdu")
+script = ExtResource("2_bnn82")
+
+[node name="CSGBox3D" type="CSGSphere3D" parent="CSGMesh"]
+transform = Transform3D(1, 0, 0, 0, -0.026177, 0.999658, 0, -0.999657, -0.026177, 1.0754, 0.13, -0.588534)
+operation = 2
+radius = 0.076
+smooth_faces = false
+
+[node name="CharacterBody3D" type="CharacterBody3D" parent="CSGMesh"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.985398, 0, 0)
+script = ExtResource("3_lwikj")
+
+[node name="CollisionShape3D" type="CollisionShape3D" parent="CSGMesh/CharacterBody3D"]
+shape = SubResource("CapsuleShape3D_j058m")
+
+[node name="Camera3D" type="Camera3D" parent="CSGMesh/CharacterBody3D"]
+fov = 75.1788
+
+[node name="MeshInstance3D" type="MeshInstance3D" parent="CSGMesh/CharacterBody3D"]
+transform = Transform3D(1, 0, 0, 0, -0.026177, 0.999658, 0, -0.999657, -0.026177, 0.090002, 0.13, -0.588534)
+mesh = SubResource("SphereMesh_kadvf")
+skeleton = NodePath("../../CSGBox3D")
+
+[node name="point" type="Node3D" parent="CSGMesh/CharacterBody3D"]
+transform = Transform3D(1, 0, 0, 0, 1, 0, 0, 0, 1, 0.090002, 0.13, -0.588534)
+
+[node name="Timer" type="Timer" parent="."]
+wait_time = 0.531
+autostart = true
+
+[connection signal="timeout" from="Timer" to="CSGMesh" method="_on_timer_timeout"]
