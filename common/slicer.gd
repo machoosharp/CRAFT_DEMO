@@ -25,14 +25,16 @@ func _process(_delta: float) -> void:
 		for body in area3d.get_overlapping_bodies().duplicate():
 			if not body is RigidBody3D:
 				continue
+
 			slice_body( body )
 
+			# Play slice sound
+			var sound = body.get_node("AudioStreamPlayer3D")
+			if sound:
+				sound.pitch_scale = randf_range( .9, 1.08 )
+				sound.play()
+
 func slice_body( body: RigidBody3D ):
-	# Play slice sound
-	var sound = body.get_node("AudioStreamPlayer3D")
-	if sound:
-		sound.pitch_scale = randf_range( .9, 1.08 )
-		sound.play()
 
 	# Mesh instance of the body the slicer is going to slice
 	var meshinstance: MeshInstance3D = body.get_node( "MeshInstance3D" )
@@ -46,18 +48,6 @@ func slice_body( body: RigidBody3D ):
 	transform_input.basis.y = meshinstance.to_local( ( global_transform.basis.y + body.global_position ) )
 	transform_input.basis.z = meshinstance.to_local( ( global_transform.basis.z + body.global_position ) )
 
-	print( "global transform of slicer" )
-	print( ( global_transform.origin ) )
-	print( ( global_transform.basis.x + body.global_position ) )
-	print( ( global_transform.basis.y + body.global_position ) )
-	print( ( global_transform.basis.z + body.global_position ) )
-
-	print( "transform input origin and basis" )
-	print( transform_input.origin )
-	print( transform_input.basis )
-
-	var collision = body.get_node( "CollisionShape3D" )
-
 	# Slice the mesh, return a list of meshes(seems to only return two right now)
 	var meshes = mesh_slicer.slice_mesh( transform_input, meshinstance.mesh, null )
 
@@ -67,6 +57,7 @@ func slice_body( body: RigidBody3D ):
 	meshinstance.mesh = meshes[0]
 
 	# create the collision shape for the original object based on first mesh
+	var collision = body.get_node( "CollisionShape3D" )
 	if len(meshes[0].get_faces()) > 2:
 		collision.shape = meshes[0].create_convex_shape()
 
